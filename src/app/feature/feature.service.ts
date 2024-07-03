@@ -268,7 +268,19 @@ export class FeatureService {
           return data;
         })
       );
+ 
     }
+           /**get approved question */
+           public approvedquestion(): Observable<any> {
+            const endPoint = 'get_approved_questions';
+            const url = `${this.sharedservice.base_url}${endPoint}`;
+      
+            return this.http.get(url).pipe(
+              map((data) => {
+                return data;
+              })
+            );
+          }
      /**get_all_questions */
     //  public get_all_questions(data:any): Observable<any> {
     //   const endPoint = 'questions';
