@@ -1,0 +1,142 @@
+.flex {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.sidebar {
+  max-width: 250px;
+  width: 250px;
+  background-color: #fff;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 6px 16px 0px #2e263d38;
+}
+a {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 16px;
+  color: #566a7f !important;
+  text-decoration: none;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.activeSidebarActive {
+  a {
+    color: #696cff !important;
+    font-weight: 600 !important;
+  }
+  .icon {
+    font-weight: 600 !important;
+  }
+  background: #696cff29;
+  font-weight: 500 !important;
+  border-radius: 5px;
+}
+li {
+  font-size: 15px;
+  line-height: 22px;
+  color: #2e263de5;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.divider {
+  background-color: #2e263d33;
+  height: 1px;
+  opacity: 1;
+  width: 85%;
+  margin: 0 auto;
+}
+.sidebar_header {
+  padding: 30px 15px 20px 15px;
+}
+
+.sidelinks {
+  color: #566a7f !important;
+  a {
+    font-weight: 500;
+  }
+
+  cursor: pointer;
+  padding: 12px 14px;
+  border-radius: 5px;
+}
+
+.sidebar_content {
+  padding: 20px 15px;
+  .sidelinks:hover {
+    background-color: #566a7f0d;
+  }
+}
+.sidebar_footer {
+  margin-top: auto;
+  padding: 0px 15px;
+}
+.avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+  background-color: #f0eff0;
+}
+.footer_links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer {
+  gap: 10px !important;
+  font-size: 15px;
+  color: #566a7f !important;
+  font-weight: 500;
+  line-height: 22px;
+}
+select.sidelinks option {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  color: #566a7f !important;
+  padding: 10px !important;
+}
+select {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  color: #566a7f !important;
+}
+.sidelinks:hover select {
+  background-color: transparent !important;
+}
+li.dropdown-container option {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 10px;
+}
+.sidelinks:hover {
+  background-color: #566a7f0d;
+}
+::ng-deep .dropdown-container select option {
+  padding: 8px 12px;
+  border: none;
+  height: 50px;
+}
+.sidelinks_drop_item {
+  cursor: pointer;
+  padding: 5px 25px 5px 25px;
+  border-radius: 5px;
+  align-items: center;
+  transition: all 0.1s;
+  color: #566a7f !important;
+}
+.sidelinks_drop_item:hover {
+  background-color: #566a7f0d;
+}

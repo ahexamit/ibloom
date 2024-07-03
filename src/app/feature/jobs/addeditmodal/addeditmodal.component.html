@@ -1,0 +1,149 @@
+<p-dialog
+  header="{{ mode === 'add' ? 'Generate Topics' : 'Generate Questions' }}"
+  [(visible)]="visible"
+  [style]="{ width: '50vw' }"
+  (onHide)="closeModal()"
+  [dismissableMask]="true"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="modal-form modal_form">
+    <div class="form-group">
+      <label for="name">Topic Name</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="topic"
+        class="form-control"
+        placeholder="Enter name"
+      />
+      <div
+        *ngIf="
+          form.get('topic')?.invalid &&
+          (form.get('topic')?.dirty || form.get('topic')?.touched)
+        "
+        class="text-danger"
+      >
+        Name is required
+      </div>
+    </div>
+    <div class="form-group">
+      <!-- <label for="skills">Grade</label>
+      <input
+        id="skills"
+        type="text"
+        formControlName="grade"
+        class="form-control"
+        placeholder="Enter Grade"
+      /> -->
+      <label for="skills">Grade</label>
+      <p-dropdown
+      formControlName="grade"
+      [options]="grade_options"
+        placeholder="Select Grade"
+      ></p-dropdown>
+      <div
+        *ngIf="
+          form.get('grade')?.invalid &&
+          (form.get('grade')?.dirty || form.get('grade')?.touched)
+        "
+        class="text-danger"
+      >
+      Grade is required
+      </div>
+    </div>
+    <div class="form-group">
+      <!-- <label for="skills">Subject</label>
+      <input
+        id="skills"
+        type="text"
+        formControlName="subject"
+        class="form-control"
+        placeholder="Enter Grade"
+      /> -->
+      <label for="skills">Subject</label>
+      <p-dropdown
+      formControlName="subject"
+      [options]="subject_options"
+        placeholder="Select Subject "
+      ></p-dropdown>
+      <div
+        *ngIf="
+          form.get('subject')?.invalid &&
+          (form.get('subject')?.dirty || form.get('subject')?.touched)
+        "
+        class="text-danger"
+      >
+      Subject is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="skills">Age</label>
+      <input
+        id="skills"
+        type="text"
+        formControlName="age"
+        class="form-control"
+        placeholder="Enter Age"
+      />
+      <div
+        *ngIf="
+          form.get('age')?.invalid &&
+          (form.get('age')?.dirty || form.get('age')?.touched)
+        "
+        class="text-danger"
+      >
+        Age is required
+      </div>
+    </div>
+    <div class="form-group" *ngIf="mode === 'edit'">
+      <label for="skills">Difficulty</label>
+      <p-dropdown
+      formControlName="difficulty"
+      [options]="dropdownOptions"
+        placeholder="Select Difficulty Level"
+      ></p-dropdown>
+    </div>
+    <div class="form-group">
+      <label for="lesson">Learning Objective</label>
+      <textarea
+        id="lesson"
+        formControlName="lesson"
+        class="form-control"
+        rows="4"
+        placeholder="Enter Learning Objective "
+      ></textarea>
+      <div
+        *ngIf="
+          form.get('lesson')?.invalid &&
+          (form.get('lesson')?.dirty || form.get('lesson')?.touched)
+        "
+        class="text-danger"
+      >
+       
+        <div *ngIf="form.get('lesson')?.errors?.required">
+          Lesson is required
+        </div>
+      </div>
+    </div>
+    <div class="button-group d-flex gap-2">
+      <button
+      type="button"
+      class="btn"
+      (click)="closeModal()"
+     >Cancel</button>
+      <!-- <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-secondary cancel_button"
+        (click)="closeModal()"
+      ></button> -->
+      <button
+      class="btn savebtn "
+      type="submit"
+      label="Save"
+      [disabled]="form.invalid"
+     >Generate</button>
+ 
+    </div>
+  </form>
+</p-dialog>

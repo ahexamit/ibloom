@@ -1,0 +1,200 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6">
+                    <div class="d-flex gap-4">
+                        <p-dropdown [options]="jobsName" [(ngModel)]="selectedJobs" optionLabel="name"
+                            placeholder="Select a Jobs Name">
+                        </p-dropdown>
+                        <p-button label="Match" class="custom_button" />
+                    </div>
+                </div>
+                <div class="col-6 text-right">
+                    <p-button label="Add" icon="bi bi-plus" class="custom_button"
+                        (click)="openModal('addform');addEdit='ADD'" />
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-end">
+                <div class="p-3 search-container">
+                    <input type="text" id="search-bar" placeholder="Search" (input)="onSearch($event)">
+                    <span class="search-icon">
+                        <i class="bi bi-search"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="customApplicationColor">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">skill</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Current ctc</th>
+                            <th scope="col">Expected ctc</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of allProfileData">
+                            <td>{{data?.name}}</td>
+                            <td>{{data?.email}}</td>
+                            <td>{{data?.skill}}</td>
+                            <td>{{data?.phone}}</td>
+                            <td>{{data?.current_ctc}}</td>
+                            <td>{{data?.expected_ctc}}</td>
+                            <td>
+                                <div class="d-flex  gap-2">
+                                    <a href="javascript:void('0')" class="action" title="edit"
+                                        (click)="edit(data?.email);addEdit='EDIT'">
+                                        <i class="bi bi-pencil-square"></i></a>
+                                    <a href="javascript:void('0')" class="action" title="view"><i
+                                            class="bi bi-info-circle"></i></a>
+                                    <!-- <a href="javascript:void('0')" class="action" title="movetoarch"> <i
+                                            class="bi bi-pencil-square"></i></a> -->
+                                    <!-- <a href="javascript:void('0')" class="action" title="downloadresume"> <i
+                                            class="bi bi-pencil-square"></i></a> -->
+                                    <a href="javascript:void('0')" class="action" title="schedule"
+                                        (click)="openModal('scheduled')">
+                                        <i class="bi bi-calendar-plus"></i></a>
+
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end">
+                <p-paginator [totalRecords]="50" [rows]="9" class="mt-4"
+                    (onPageChange)="onPageChange($event)"></p-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add/edit popup -->
+<ng-template #addModal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{addEdit==='ADD'?"Add new profile":"Edit Profile"}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="addProfile">
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <label for="">Name</label>
+                        <input type="text" class="form-control" formControlName="name">
+                    </div>
+                    <div class="col-6">
+                        <label for="">Email</label>
+                        <input type="" class="form-control" formControlName="email">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <label for="">Phone</label>
+                        <input type="text" class="form-control" formControlName="phone">
+                    </div>
+                    <div class="col-6">
+                        <label for="">experience</label>
+                        <input type="text" class="form-control" formControlName="experience">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <label for="">Current Salary</label>
+                        <input type="text" class="form-control" formControlName="current_ctc">
+                    </div>
+                    <div class="col-6">
+                        <label for="">Expected Salary</label>
+                        <input type="text" class="form-control" formControlName="expected_ctc">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label for="">Skill</label>
+                        <input type="text" class="form-control" formControlName="skill">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label for="">File Name</label>
+                        <input type="text" class="form-control" formControlName="filename">
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-12">
+                    <label for="fileupload"></label>
+                    <input type="file" id="fileupload" class="form-control" (change)="fileUpload($event)">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="d-flex justify-content-end">
+                <ng-container *ngIf="addEdit==='ADD';else editButton">
+                    <p-button label="Save" class="custom_button" (onClick)="addProfileData()"></p-button>
+                </ng-container>
+                <ng-template #editButton>
+                    <p-button label="Edit" class="custom_button" (onClick)="editProfileData()"></p-button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!--  scheduleModal-->
+<ng-template #scheduleModal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Scheduled Meeting</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="scheduleForm">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label for="">title</label>
+                        <input type="text" class="form-control custom_textarea" formControlName="title">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label for="">Schedule</label>
+                    </div>
+                    <div class="col-12">
+                        <p-calendar class="schedulemetingCalender" formControlName="start_time" [showTime]="true"
+                            [hourFormat]="24" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label for="">Description</label>
+                        <textarea formControlName="description" id="" cols="30" rows="10"
+                            class="form-control custom_textarea"></textarea>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <label for="">Location</label>
+                        <input type="text" class="form-control custom_textarea" formControlName="location">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="d-flex justify-content-end">
+                <p-button label="Schedule" class="custom_button" (onClick)="scheduledMetting()"></p-button>
+            </div>
+        </div>
+    </div>
+</ng-template>

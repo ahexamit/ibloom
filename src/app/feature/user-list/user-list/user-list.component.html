@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="p-2">
+    <ng-container *ngIf="userData.length > 0">
+      <app-table
+        [data]="userData"
+        [totalCount]="toTalCount"
+        (paginate)="paginate($event)"
+      ></app-table>
+    </ng-container>
+    <ng-container *ngIf="userData.length <= 0">
+      <div class="content-data">
+        <h2>No Data Available</h2>
+      </div>
+    </ng-container>
+  </div>
+</div>

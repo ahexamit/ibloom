@@ -1,0 +1,222 @@
+@import "variable";
+
+// Import Bootstrap source files (Required file)
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+@import "../../../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
+
+//This is for the components (Required file)
+@import "core/core";
+@import "scafholdings";
+@import "components";
+
+//This is for the responsive (Required file)
+@import "responsive";
+
+//In This scss you can write your scss
+@import "custom";
+
+
+
+// routerlink
+// .active-link {
+//     background-color: #4F46E5;
+//     border-radius: 11px;
+//     color: #FFFFFF !important;
+// }
+
+// .router-link-active-child>span {
+//     border-bottom: 2px solid #4F46E5;
+//     color: #4F46E5 !important;
+//     padding-bottom: 4px;
+// }
+
+// .circle-profile {
+//     // border-radius: ;
+//     background: #D9D9D9;
+// }
+
+// pagination style modification
+.p-paginator .p-paginator-pages .p-paginator-page {
+    border: 1.33px solid #DEDEDE !important;
+    border-radius: 11px !important;
+
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background-color: #4F46E5 !important;
+    border: 1.33px solid #DEDEDE !important;
+    color: #FFFFFF !important
+}
+
+.schedulemetingCalender .p-calendar {
+    width: 100vw
+}
+
+// .p-calendar {
+//     border-left: none !important;
+//     color: #DCDCDC !important;
+//     background: #F9F9F9 !important;
+// }
+
+// .p-calendar .p-inputtext {
+
+//     background: #F9F9F9 !important;
+//     width: 100%
+// }
+
+// .save_button {
+//     .p-button {
+//         // border-radius: 10px !important;
+//         background: #4F46E5 !important;
+//         color: #FFFFFF !important;
+//         width: 100% !important
+//     }
+// }
+.customApplicationColor {
+//     background: #4F46E5 !important;
+    color: black !important;
+    font-size: large;
+    font-weight: 400;
+}
+
+.consultant {
+    .p-button {
+        border-radius: 18px !important;
+        background: #4F46E5 !important;
+        color: #FFFFFF !important
+    }
+}
+
+.globalColor {
+    //global background template
+    background: #4F46E5 !important;
+    color: #FFFFFF !important
+}
+
+.p-dropdown {
+    height: 45px !important;
+}
+
+.custom_button .p-button {
+    height: 45px !important;
+    background: #4F46E5 !important;
+    border: none;
+    color: #FFFFFF !important // border-radius: 18px !important;
+}
+
+.p-dialog .p-dialog-footer button {
+    background-color: #4F46E5;
+    color: #FFFFFF;
+}
+
+.p-confirm-dialog-reject {
+    background: #ced4da;
+}
+
+.p-dialog .p-dialog-footer button:hover {
+    background-color: #4F46E5;
+    color: #FFFFFF;
+}
+
+.p-overlaypanel {
+    width: 25rem;
+}
+
+.p-sidebar {
+    width: 35% !important;
+}
+
+.p-sidebar-header {
+    display: none !important;
+}
+
+.p-sidebar-footer {
+    display: none !important;
+}
+
+.p-sidebar-content {
+    padding: 0px !important
+}
+.p-dialog-title{
+    color: #566a7f !important;
+    font-weight: 500 !important;
+}
+ 
+  .p-button-secondary:hover{
+    background-color: #566a7f;
+    color: #fff !important;
+  }
+  .p-dialog-header {
+    justify-content: center !important;
+  }
+  .p-dialog-header-icons{
+    position: absolute !important;
+    right: 6% !important;
+  }
+  .call_dialog{
+    .p-dialog-mask{
+        z-index: 9999 !important;
+         justify-self: start !important;
+    
+    }
+    .p-dialog-draggable{
+        width: 65% !important;
+        max-width: 65% !important;
+       
+    }
+}
+
+ .p-sidebar-right{
+    z-index: 9999 !important;
+
+}
+.modal-body {
+    background-color: #5F61E6 !important;
+}
+
+.modal-footer {
+    background-color: #5F61E6 !important;
+    padding: 10px 20px !important;
+}
+
+.custome_dialog {
+    .p-dialog-header {
+        background-color: #5F61E6 !important;
+        color: #fff !important;
+
+        .p-dialog-title {
+            color: #fff !important;
+            font-weight: 500 !important;
+        }
+
+        .p-dialog-header-icons {
+            color: #fff !important;
+            font-weight: 500 !important;
+        }
+
+    }
+
+    .p-dialog .p-dialog-header .p-dialog-header-icon {
+        color: #fff !important;
+        font-weight: 500 !important;
+    }
+
+    .p-dialog-content {
+        padding: 0 !important;
+    }
+}
+
+.gap-20 {
+    gap: 10rem;
+}
+
+::ng-deep .dropdown-container select option {
+    padding: 8px 12px;
+    border: none;
+    height: 50px;
+}
+.modal_form{
+    .p-dropdown{
+        width: 100% !important;
+    }
+}

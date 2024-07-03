@@ -1,0 +1,82 @@
+.modal-form {
+    .form-group {
+      margin-bottom: 1.5rem;
+  
+      label {
+        display: block;
+        font-weight: 500;
+        color: #566a7f;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+  
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        background-color: #fff;
+        border: 1px solid #566a7f3b;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out;
+        color: #495057;
+  
+        &:focus {
+          border-color: #80bdff;
+          outline: 0;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+      }
+  
+      textarea {
+        resize: vertical;
+      }
+  
+      .text-danger {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+    }
+  
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      .btn{
+        color: #566a7f;
+        padding: 0.4375rem 1.25rem;
+        border-color: #566a7f;
+        background: rgba(0, 0, 0, 0);
+        font-weight: 500 !important;
+        min-width: 8rem;
+      }
+      .savebtn{
+        color: #696cff;
+        padding: 0.4375rem 1.25rem;
+        border-color: #696cff;
+        background: rgba(0, 0, 0, 0);
+        font-weight: 500 !important;
+        min-width: 8rem;
+      }
+    }
+  }
+  .btn:hover {
+    
+      background-color: #566a7f !important;
+      color: #fff!important;
+ 
+    }
+
+  .savebtn{
+    color: #696cff !important;
+    padding: 0.4375rem 1.25rem;
+    border-color: #696cff;
+    background: rgba(0, 0, 0, 0);
+    font-weight: 500 !important;
+  }
+  .savebtn:hover {
+    
+    background-color: #696cff !important;
+    color: #fff!important;
+
+  }

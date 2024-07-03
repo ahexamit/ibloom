@@ -1,0 +1,7 @@
+<!-- <div *ngIf="HeaderItem" class="headertext"><h1>{{HeaderItem.headerName}}</h1></div> -->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs; let last = last" [class.active]="last">
+        <a *ngIf="!last" [routerLink]="[getBreadcrumbLink(breadcrumb)]">{{ breadcrumb }}</a>
+        <span *ngIf="last">{{ breadcrumb }}</span>
+    </li>
+</ol>

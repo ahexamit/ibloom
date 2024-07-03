@@ -1,0 +1,230 @@
+<div class="table-content px-3">
+  <div class="d-flex justify-content-between job_header bg-white py-3 px-3 align-items-center">
+    <div class="position-relative" style="width: 30%">
+      <i class="pi pi-search position-absolute" style="top: 28%; left: 2%"></i>
+      <input
+        id="name"
+        type="search"
+        class="form-control_search"
+        placeholder="Search Topics"
+        (input)="filterJobs($event)"
+      />
+    </div>
+    <button class="btn" (click)="showDialog('add')">GENERATE TOPICS</button> 
+  </div>
+  <div class="">
+    <!-- <div class="cols"> -->
+      <div class="cols" *ngIf="filteredJobs?.length > 0">
+      <div class="item" *ngFor="let data of filteredJobs">
+        <div class="card p-4">
+          <div class="row">
+            <div class="col-md-12 mb-4">
+              <div class="card-text"><strong style="font-size: 24px;">{{ data?.topic }}</strong></div>
+            </div>
+            <div class="col-md-12 mb-4">
+              <div class="card-description">
+                <div class="mb-4">
+                  <div class="card_title mb-2">Introduction</div>
+                  <div *ngIf="!data.showFullIntroduction">
+                    {{ data?.lesson_content?.Introduction || data?.lesson_content  | slice:0:100 }}...
+                    <a href="#" (click)="toggleViewMore(data, 'introduction')">View more</a>
+                  </div>
+                  <div *ngIf="data.showFullIntroduction">
+                    {{ data?.lesson_content?.Introduction || data?.lesson_content }}
+                    <a href="#" (click)="toggleViewMore(data, 'introduction')">View less</a>
+                  </div>
+                </div>
+    
+                <div>
+                  <div class="card_title mb-2">Summary</div>
+                  <div *ngIf="!data.showFullSummary">
+                    {{ data?.lesson_content?.Summary | slice:0:100 }}...
+                    <a href="#" (click)="toggleViewMore(data, 'summary')">View more</a>
+                  </div>
+                  <div *ngIf="data.showFullSummary">
+                    {{ data?.lesson_content?.Summary }}
+                    <a href="#" (click)="toggleViewMore(data, 'summary')">View less</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="d-flex gap-4">
+                <div>
+                  <a class="interview_button" (click)="showDialog('edit', data)">Generate Questions</a>
+                </div>
+                <div>
+                  <a class="interview_button" (click)="showQuestions(data)">Questions</a>
+                </div>
+                <div>
+                  <a class="interview_button" (click)="showWorkSheet(data.topic)">WorkSheet</a>
+                </div>
+
+                <div>
+            <!-- <div class="col-md-12">
+              <div class="d-flex gap-4">
+                <div>
+                  <a class="interview_button" (click)="showDialog('edit',data)">Generate Questions</a>
+                </div>
+                <div>
+                  <a class="interview_button" (click)="showDialog('edit', data)">Edit</a> 
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  
+  <ng-template #noJobsTemplate>
+    <div class="no-jobs-found d-flex justify-content-center align-items-center" style="height: 50vh;">
+      <h3>No matching Topics found</h3>
+    </div>
+  </ng-template>
+
+
+
+  <!-- <ng-template #noJobsTemplate>
+    <div class="no-jobs-found d-flex justify-content-center align-items-center" style="height: 50vh;">
+      <h3>No matching jobs found</h3>
+    </div>
+  </ng-template> -->
+
+  <!-- <div class="d-flex justify-content-end mb-3">
+        <button
+          pButton
+          type="button"
+          (click)="showDialog('add')"
+          icon="pi pi-plus"
+          label="ADD JOBS"
+          class="custom-add-button"
+        ></button>
+      </div>
+      <div class="table-responsive bg-white">
+        <table class="table table-hover">
+          <thead class="customApplicationColor">
+            <tr>
+              <th scope="col">Job Title</th>
+              <th scope="col">Skills</th>
+              <th scope="col" style="width: 25%">Description</th>
+              <th scope="col">Action</th>
+              <th scope="col">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of allJobs">
+              <td>{{ data?.job_title }}</td>
+              <td>{{ data?.skills }}</td>
+              <td>{{ data?.job_description }}</td>
+      
+              <td>
+                <div class="d-flex gap-2">
+                    <span  class="interview_click_button d-flex align-items-center gap-3" (click)="showInterviewModal(data?.job_id)">
+                        Start Interview
+                      
+                    </span>
+                </div>
+              </td>
+              <td>
+               
+                <span  (click)="showDialog('edit', someData)"> 
+                    <i style="font-size: 1.5rem; color:#0AB39C; cursor: pointer;" class="pi pi-pencil"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div> -->
+
+  <app-chat
+    *ngIf="flag"
+    [sidebarVisible]="isSidebarVisible"
+    (sidebarHide)="handleSidebarHide()"
+    [interview_id]="interview_id"
+    [user_name]="user_name"
+  ></app-chat>
+  <app-addeditmodal
+    [mode]="modalMode"
+    [data]="modalData"
+    [(visible)]="isModalVisible"
+    (close)="handleModalClose()"
+  ></app-addeditmodal>
+
+  <div class="card flex justify-content-center">
+    <p-dialog
+      header="Interview Details"
+      [(visible)]="visible"
+      [style]="{ width: '50vw' }"
+      (onHide)="closeModal()"
+      [dismissableMask]="true"
+    >
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="modal-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            class="form-control"
+            placeholder="Enter name"
+          />
+          <div
+            *ngIf="
+              form.get('name')?.invalid &&
+              (form.get('name')?.dirty || form.get('name')?.touched)
+            "
+            class="text-danger"
+          >
+            Name is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Enter email"
+          />
+          <div
+            *ngIf="
+              form.get('email')?.invalid &&
+              (form.get('email')?.dirty || form.get('email')?.touched)
+            "
+            class="text-danger"
+          >
+            <div *ngIf="form.get('email')?.errors?.required">
+              Email is required
+            </div>
+            <div *ngIf="form.get('email')?.errors?.email">
+              Invalid email address
+            </div>
+          </div>
+        </div>
+        <div class="button-group">
+         
+          <button  type="button" class="btn cancel" (click)="closeModal()">Cancel</button>
+          <button
+            type="submit"
+            [disabled]="form.invalid"
+            class="btn savebtn"
+          >
+            Continue
+          </button>
+          <!-- <button
+          pButton
+          type="submit"
+          (click)="startMeeting()"
+          label="Continue "
+          class="p-button-primary"
+          [disabled]="form.invalid"
+        ></button> -->
+        </div>
+      </form>
+    </p-dialog>
+  </div>
+</div>

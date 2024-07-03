@@ -1,0 +1,72 @@
+<div class="sidebar">
+  <div class="sidebar_header justify-content-center flex">
+    <div>
+      <img
+        src="\assets\images\icons\ahex.png"
+        width="100%"
+        alt="logo"
+      />
+      <!-- src="../../../assets/images/logos/ibloom.jpg" -->
+    </div>
+  </div>
+  <hr class="divider" />
+  <div class="sidebar_content overflow-y-auto">
+    <div
+      class="text-[14px] uppercase font-medium leading-[16px] text-[#2E263DA3]"
+    ></div>
+    <ul class="mt-2">
+      <ng-container *ngFor="let item of sidebarData; let i = index">
+        <li
+          class="sidelinks"
+          [ngClass]="{
+            activeSidebarActive: activeMenuItem === item.activeTitle
+          }"
+        >
+          <a
+            [routerLink]="[item.url]"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }"
+            (click)="setActiveMenuItem(item.activeTitle)"
+          >
+            <i [class]="item.icon"></i>
+            {{ item.title }}
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+  <div
+    class="sidebar_footer relative"
+    (document:click)="onDocumentClick($event)"
+  >
+    <!-- <li
+      class="w-100 sidelinks d-flex align-items-center  justify-content-between dropdown-container"
+      (click)="toggleDropdown($event)"
+      style="gap: 12px"
+    >
+      <div class="d-flex gap-3 align-items-center">
+        <i class="pi pi-bullseye"></i>
+        {{ selectedValue }}
+      </div>
+      <i class="pi pi-angle-down"></i>
+    </li> -->
+    <!-- <ul class="ml-4 mt-0 mb-1" *ngIf="isDropdownVisible">
+      <li
+        class="w-100 sidelinks_drop_item d-flex align-items-center gap-2 dropdown-container gap-0"
+        *ngFor="let option of options"
+        (click)="selectValue(option)"
+      >
+        {{ option }}
+      </li>
+    </ul> -->
+    <!-- <li class="sidelinks mb-2">
+      <a href="#" class="d-flex gap-3" (click)="logout()"><i class="icon pi pi-sign-out"></i> Logout </a>
+    </li> -->
+    <hr class="divider" />
+    <li class="sidelinks text-center footer relative">
+      © 2024 Ahex Technologies. All rights reserved.
+    </li>
+  </div>
+</div>
+
+

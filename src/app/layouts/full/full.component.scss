@@ -1,0 +1,22 @@
+.max-width {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.content{
+  width: calc(100% - 250px);
+  background-color: #8080800a;
+}
+
+.aibackGround {
+  background-image: ('assets/images/bg/ai-concept-vector.jpg');
+}
+
+.containerPage {
+  padding-top: 5rem;
+  padding-left: 15px;
+
+}
+
+.left-sidebar {
+  width: 280px;
+}

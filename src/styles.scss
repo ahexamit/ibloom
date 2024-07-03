@@ -1,0 +1,213 @@
+/* You can add global styles to this file, and also import other style files */
+/* PrimeNG */
+@import "node_modules/primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import 'ngx-toastr/toastr';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+@font-face {
+
+    font-family: 'SF Pro Display';
+    src: url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYBLACKITALIC.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYBOLD.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYHEAVYITALIC.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYLIGHTITALIC.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYMEDIUM.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYREGULAR.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYSEMIBOLDITALIC.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYTHINITALIC.OTF') format('OTF'),
+        url('./assets/sf-pro-display-cufonfonts/SFPRODISPLAYULTRALIGHTITALIC.OTF') format('OTF');
+    /* Add other font formats and their URLs if available, for example:
+       src: url('../assets/fonts/OpenSans-Regular.woff') format('woff'),
+            url('../assets/fonts/OpenSans-Regular.woff2') format('woff2');
+    */
+}
+
+// @font-face {
+//     font-family: "RoslindaleText-Bold";
+//     src: url("./assets/fonts/RoslindaleText-Bold.ttf");
+// }
+
+@font-face {
+    font-family: "AvenirLTStd-Black";
+    src: url("./assets/fonts/avenir_ff/AvenirLTStd-Black.otf");
+}
+
+
+@font-face {
+    font-family: "AvenirLTStd-Book";
+    src: url("./assets/fonts/avenir_ff/AvenirLTStd-Book.otf");
+}
+
+/* You can then apply the font to elements in your styles */
+body {
+    font-family: 'AvenirLTStd-Book' !important;
+}
+
+h1,
+h2 {
+    font-family: "AvenirLTStd-Black" !important;
+}
+
+button,
+h3 {
+    font-family: 'AvenirLTStd-Black' !important;
+}
+
+.pwd-container .p-password,
+.pwd-container .p-inputtext {
+    width: 100%;
+}
+
+
+.primary-input {
+    .p-inputtext {
+        height: 64px;
+        background-color: #f2f2f2;
+        border-radius: 8px;
+    }
+}
+
+.form-check-input:checked {
+    border: none;
+    background-color: #FED83D;
+}
+
+.form-switch.form-check-input:focus {
+    border: none;
+    color: #f2f2f2;
+    background-color: #FED83D;
+
+}
+
+
+.form-switch .form-check-input {
+    height: 2em;
+    width: 3em;
+    color: #f2f2f2
+}
+
+.form-check-input {
+    box-shadow: none !important;
+
+
+}
+
+html,
+body {
+    height: 100%;
+}
+
+p-password {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed !important;
+}
+
+.evendate-block .p-calendar {
+    width: 100% !important;
+}
+
+.p-button.p-button-icon-only {
+    color: #84828A;
+    background: transparent;
+    border: none;
+}
+
+.p-button-icon-only:hover {
+    color: #84828A !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.p-calendar-w-btn .p-inputtext {
+    border: none !important;
+}
+
+.ql-list.circleicon svg {
+    display: none;
+}
+
+.circleicon::before {
+    content: '\25E6';
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+#calendar-content .p-calendar {
+    width: 100%;
+    margin-left: 14px;
+}
+
+#calendar-content .p-calendar-w-btn .p-inputtext {
+    padding: 18px 17px;
+}
+
+.mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled:checked+.mdc-radio__background .mdc-radio__outer-circle {
+    border-color: yellow !important;
+
+}
+
+.mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle {
+    border-color: #3B82F6 !important;
+}
+
+.mat-mdc-radio-button.mat-accent {
+    --mat-radio-checked-ripple-color: none !important
+}
+
+.p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+    background-color: #3B82F6 !important;
+}
+
+.p-carousel-container {
+
+    .p-carousel .p-carousel-content .p-carousel-prev,
+    .p-carousel .p-carousel-content .p-carousel-next {
+        display: none;
+    }
+}
+
+.article-editor-block .p-editor-container .p-editor-content .ql-editor {
+    background-color: #F9F9F9;
+
+}
+
+.article-editor-block .ql-editor.ql-blank::before {
+    color: #ccc;
+    font-style: normal;
+    font-family: 'AvenirLTStd-Book';
+    font-size: 16px;
+}
+
+#pn_id_9 .p-carousel-item {
+    width: 100%;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.container-fluid{
+    max-width: 100% !important;
+}
+.custom-button:hover{
+    background-color: none !important;
+}
+.custom-add-button{
+    background-color: #405189 !important;
+    border: none !important;
+}
+.p-calendar{
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+}
