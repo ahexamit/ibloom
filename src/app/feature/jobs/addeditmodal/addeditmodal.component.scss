@@ -42,41 +42,23 @@
     .button-group {
       display: flex;
       justify-content: flex-end;
-      .btn{
-        color: #566a7f;
-        padding: 0.4375rem 1.25rem;
-        border-color: #566a7f;
-        background: rgba(0, 0, 0, 0);
-        font-weight: 500 !important;
-        min-width: 8rem;
-      }
-      .savebtn{
-        color: #696cff;
-        padding: 0.4375rem 1.25rem;
-        border-color: #696cff;
-        background: rgba(0, 0, 0, 0);
-        font-weight: 500 !important;
-        min-width: 8rem;
-      }
+   
     }
   }
-  .btn:hover {
-    
-      background-color: #566a7f !important;
-      color: #fff!important;
- 
-    }
 
-  .savebtn{
-    color: #696cff !important;
+
+
+  
+  .btn {
+    color: #0E62AA; /* Changed to the blue from our gradient */
     padding: 0.4375rem 1.25rem;
-    border-color: #696cff;
+    border: 1px solid #0E62AA; /* Changed border-color to border for consistency */
     background: rgba(0, 0, 0, 0);
     font-weight: 500 !important;
+    transition: all 0.3s ease; /* Added for smooth transition on hover */
   }
-  .savebtn:hover {
-    
-    background-color: #696cff !important;
-    color: #fff!important;
-
+  .btn:hover {
+    background: linear-gradient(to right, #1ED7A5, #0E62AA);
+    color: white; /* Change text color to white for better contrast */
+    border-color: transparent; /* Optional: remove border on hover */
   }

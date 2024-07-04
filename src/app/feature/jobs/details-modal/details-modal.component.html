@@ -1,0 +1,9 @@
+<p-dialog 
+  header="{{ 'Topic Deatils'}}"
+  [(visible)]="visible"
+  [style]="{ width: '50vw' }"
+  (onHide)="closeModal()"
+  [dismissableMask]="true"
+>
+ {{deatilsShow}}
+</p-dialog>

@@ -1,15 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { FeatureService } from "../../feature.service";
-import { interview } from "src/app/model/profile";
-import * as moment from "moment-timezone";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FeatureService } from '../../feature.service';
+import { interview } from 'src/app/model/profile';
+import * as moment from 'moment-timezone';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
-  selector: "app-interview",
-  templateUrl: "./interview.component.html",
-  styleUrls: ["./interview.component.scss"],
+  selector: 'app-interview',
+  templateUrl: './interview.component.html',
+  styleUrls: ['./interview.component.scss'],
 })
 export class InterviewComponent implements OnInit {
   visible: boolean = false;
@@ -18,32 +20,32 @@ export class InterviewComponent implements OnInit {
   allJobs: interview[] = [];
   isSidebarVisible = false;
   flag = false;
-  modalMode: "add" | "edit" | null = null;
+  modalMode: 'add' | 'edit' | null = null;
   modalData: any = null;
   isModalVisible = false;
   selectedJob_id!: string;
   job_id!: string;
-  interview_id: string = "";
+  interview_id: string = '';
   filteredJobs: any[] = [];
-  searchQuery: string = "";
+  searchQuery: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
-  user_name: string = "User";
+  user_name: string = 'User';
   pagesArray: any[] = [];
   lastSegment!: string;
   highlightedSessionId: string | null = null;
   isModalOpen!: boolean;
-  dummyJson:any[]= [];
+  dummyJson: any[] = [];
   selectedTopic!: any;
   openAccordions: boolean[] = [];
   dropdownOptions: any = [];
-  gradeOptions: any = [{ label: "First", value: "First" }];
-  subjectOptions: any = [{ label: "Maths", value: "Maths" }];
+  gradeOptions: any = [{ label: 'First', value: 'First' }];
+  subjectOptions: any = [{ label: 'Maths', value: 'Maths' }];
   diffuciltyOptions: any = [
-    { label: "ALL", value: "ALL" },
-    { label: "Easy", value: "easy" },
-    { label: "Medium", value: "medium" },
-    { label: "Hard", value: "hard" },
+    { label: 'ALL', value: 'ALL' },
+    { label: 'Easy', value: 'easy' },
+    { label: 'Medium', value: 'medium' },
+    { label: 'Hard', value: 'hard' },
   ];
   selectedGrade!: any;
   selectedSubject!: any;
@@ -52,28 +54,38 @@ export class InterviewComponent implements OnInit {
   paramGrade!: string | null;
   paramsubject!: string | null;
   generatedVr: any;
-  isMovedToWorksheet: any=false;
+  isMovedToWorksheet: boolean[] = [];
+
   datageneratedVr: any;
   constructor(
     private featuredService: FeatureService,
     private fb: FormBuilder,
     private routes: ActivatedRoute,
     private router: Router,
-    private toaster: ToastrService,
+    private toaster: ToastrService
   ) {
     this.form = this.fb.group({
-      name: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
     });
-    console.log(this.filteredJobs, "worksheet");
+    console.log(this.filteredJobs, 'worksheet');
   }
+  ///start////////////////////////////////////////
+  message: string = '';
+  showtextbox: boolean = false;
+
+  toggleOverlay(event: Event, op: OverlayPanel) {
+    op.toggle(event);
+  }
+
+  // end/////////////////////////////////////////////////////
   ngOnInit(): void {
     this.get_topics();
     this.routes.paramMap.subscribe((params) => {
       console.log(params);
-      this.paramTopic = params.get("topic");
-      this.paramGrade = params.get("grade");
-      this.paramsubject = params.get("subject");
+      this.paramTopic = params.get('topic');
+      this.paramGrade = params.get('grade');
+      this.paramsubject = params.get('subject');
     });
   }
 
@@ -83,13 +95,26 @@ export class InterviewComponent implements OnInit {
       this.initializeSelectedTopic();
     });
   }
+  sendMessage() {
+    // Call API to send the message
+    console.log('Message sent');
+  }
+
+  saveMessage(op: OverlayPanel) {
+    // Call API to save the message
+    console.log('Message saved:', this.message);
+    op.hide();
+  }
+  showtextarea() {
+    this.showtextbox = true;
+  }
 
   initializeSelectedTopic(): void {
     if (this.paramTopic && this.paramGrade && this.paramsubject) {
       this.selectedTopic = this.paramTopic;
       this.selectedGrade = this.paramGrade;
       this.selectedSubject = this.paramsubject;
-      this.selectedDiffucilty='ALL';
+      this.selectedDiffucilty = 'ALL';
     } else if (this.dropdownOptions.length > 0) {
       this.selectedTopic = this.dropdownOptions[0].value;
       this.selectedGrade = this.gradeOptions[0].value;
@@ -116,30 +141,46 @@ export class InterviewComponent implements OnInit {
   }
 
   generateQuestions(event: Event, index: number, data: any): void {
-    const obj = {
-      question_id: data?.question_id,
-      user_input: ''
+    console.log(this.message);
+    console.log(data, data?.question_id, data?.regenerated_id);
+
+    let obj: any = {
+      user_input: this.message,
     };
-  
-    this.featuredService.generateVr(obj).subscribe((res) => {
+    let datatype: string = '';
+    if (data.question_id) {
+      datatype = 'question';
+      obj.question_id = data?.question_id;
+    } else {
+      datatype = 'requestion';
+
+      obj.regenerated_id = data?.regenerated_id;
+    }
+    console.log(obj);
+
+    this.featuredService.generateVr(obj, datatype).subscribe((res) => {
       console.log('Response from generateVr:', res); // Log the response for debugging
-  
-      // Check if res.generated_vr is an object
+
       if (typeof res === 'object' && res !== null) {
+        this.toaster.success('Question successfully generate');
+
+        this.showtextbox = false;
+        this.message = '';
         const normalizedResponse = this.normalizeKeys(res);
         if (!data.generatedVr) {
           data.generatedVr = [];
         }
-        // data.generatedVr.push(normalizedResponse); 
-        this.datageneratedVr = data.generatedVr.push(normalizedResponse);
-     this.isMovedToWorksheet = new Array(this.datageneratedVr?.length).fill(false);
 
+        data.generatedVr.push(normalizedResponse);
+
+        // Update the isMovedToWorksheet array only for the new question
+        this.isMovedToWorksheet.push(false);
       } else {
         console.error('Unexpected structure for the response:', res);
       }
     });
   }
-  
+
   normalizeKeys(obj: any): any {
     const normalizedObj: any = {};
     for (const key in obj) {
@@ -150,20 +191,36 @@ export class InterviewComponent implements OnInit {
     }
     return normalizedObj;
   }
-  
-  movetoworksheet(data:any,index:any){
-    console.log(data,index);
-    const obj ={
-      regenerated_id:data
-    }
-    this.featuredService.movetoworksheet(obj).subscribe((res)=>{
-      console.log(res);
-      if( res.message ="Status updated to approved successfully!")
-      this.toaster.success('Question Succesfully move to worksheet')
-      this.isMovedToWorksheet[index] = true;
-    })
-  }
 
+  movetoworksheet(data: any, index: number): void {
+    console.log(data, data?.question_id, data?.regenerated_id);
+    // const obj = {
+    //   regenerated_id: data,
+    // };
+    let obj: any = {
+      
+    };
+    let datatype: string = '';
+    if (data.question_id) {
+      datatype = 'question';
+      obj.question_id = data?.question_id;
+    } else {
+      datatype = 'requestion';
+
+      obj.question_id = data;
+    }
+    console.log(obj);
+    console.log(data);
+
+    this.featuredService.movetoworksheet(obj,datatype).subscribe((res) => {
+      console.log(res);
+      if (res.message === 'Status updated to approved successfully!') {
+        this.toaster.success('Question successfully moved to worksheet');
+        this.isMovedToWorksheet[index] = true;
+      }
+    });
+  }
+  delete(data: any) {}
   onDropdownChange(event: any, params: string): void {
     const selectedValue = event.value;
     switch (params) {
@@ -193,11 +250,11 @@ export class InterviewComponent implements OnInit {
         this.selectedTopic = selectedOption.value;
       }
     }
-  };
+  }
 
   isAccordionOpen(index: number): boolean {
     return this.openAccordions[index];
-  };
+  }
   showInterviewModal(job_id: string) {
     this.selectedJob_id = job_id;
     console.log(job_id);
@@ -210,7 +267,7 @@ export class InterviewComponent implements OnInit {
   }
 
   private getAllInterviews(): void {
-    this.featuredService.getAllInterviews("get_interviews").subscribe({
+    this.featuredService.getAllInterviews('get_interviews').subscribe({
       next: (res: any) => {
         this.allJobs = res.session_interviews;
         this.job_id = res.session_interviews.job_id;
@@ -226,7 +283,7 @@ export class InterviewComponent implements OnInit {
     this.filteredJobs = this.dummyJson.filter((job) =>
       job['question'].toLowerCase().includes(searchTerm)
     );
-  };
+  }
   getStarColor(difficulty: string): string {
     let color = '';
     switch (difficulty) {
@@ -288,11 +345,11 @@ export class InterviewComponent implements OnInit {
       }
     } else {
       if (currentPage <= 3) {
-        this.pagesArray = [1, 2, 3, 4, "...", totalPages];
+        this.pagesArray = [1, 2, 3, 4, '...', totalPages];
       } else if (currentPage >= totalPages - 2) {
         this.pagesArray = [
           1,
-          "...",
+          '...',
           totalPages - 3,
           totalPages - 2,
           totalPages - 1,
@@ -301,11 +358,11 @@ export class InterviewComponent implements OnInit {
       } else {
         this.pagesArray = [
           1,
-          "...",
+          '...',
           currentPage - 1,
           currentPage,
           currentPage + 1,
-          "...",
+          '...',
           totalPages,
         ];
       }
@@ -313,7 +370,7 @@ export class InterviewComponent implements OnInit {
   }
 
   startMeeting(user_name: string, job_id: string, interview_id: string) {
-    console.log("starthistoryblock");
+    console.log('starthistoryblock');
     console.log(user_name, interview_id);
     this.user_name = user_name;
     this.interview_id = interview_id;
@@ -333,17 +390,17 @@ export class InterviewComponent implements OnInit {
 
   urlParamChanged(): void {
     const currentParams = { ...this.routes.snapshot.queryParams };
-    currentParams["session_id"] = this.interview_id;
+    currentParams['session_id'] = this.interview_id;
     this.router.navigate([], {
       relativeTo: this.routes,
       queryParams: currentParams,
-      queryParamsHandling: "merge",
+      queryParamsHandling: 'merge',
     });
-    currentParams["username"] = this.user_name;
+    currentParams['username'] = this.user_name;
     this.router.navigate([], {
       relativeTo: this.routes,
       queryParams: currentParams,
-      queryParamsHandling: "merge",
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -355,12 +412,12 @@ export class InterviewComponent implements OnInit {
 
   convertToIST(dateString: string): string {
     return moment
-      .tz(dateString, "GMT")
-      .tz("Asia/Kolkata")
-      .format("YYYY-MM-DD hh:mm:ss A");
+      .tz(dateString, 'GMT')
+      .tz('Asia/Kolkata')
+      .format('YYYY-MM-DD hh:mm:ss A');
   }
 
-  showDialog(mode: "add" | "edit", data?: any) {
+  showDialog(mode: 'add' | 'edit', data?: any) {
     console.log(data);
     this.modalMode = mode;
     this.modalData = data || null;

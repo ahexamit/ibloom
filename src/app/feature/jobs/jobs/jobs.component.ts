@@ -25,12 +25,15 @@ export class JobsComponent implements OnInit {
   modalMode: "add" | "edit" | null = null;
   modalData: any = null;
   isModalVisible = false;
+  isDetailModalVisible = false;
   selectedJob_id!: string;
   job_id: any;
   interview_id: any = "";
   user_name: string = "User";
   parsedLessons: any;
 
+  items!: any[];
+  cardData: any;
   constructor(
     private featuredService: FeatureService,
     private fb: FormBuilder,
@@ -47,9 +50,35 @@ export class JobsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllJobs();
+    this.items = [
+      { label:'Generated Questions',icon: 'pi pi-refresh', title: ' Generated Questions', command: (event:any) => this.showDialog('edit',this.cardData) },
+      { label:'Questions',icon: 'pi pi-question-circle', title: 'Questions', command: () => this.showQuestions(this.cardData) },
+      {label:'WorkSheet', icon: 'pi pi-file', title: 'WorkSheet', command: () => this.showWorkSheet(this.cardData)},
+        {label:'Delete', icon: 'pi pi-trash', title: 'Delete',  severity:"danger", command: () => this.deleteItem() }
+       
+    ]
+  
+   
     // this.featuredService.getallQuestions().subscribe((res)=>{
     //   console.log(res)
     // })
+  }
+  editItem(event:any) {
+    // Your edit item logic here
+    console.log('item',event)
+    this.router.navigate([''])
+  }
+  gettingdata(data:any){
+    this.cardData= data
+    console.log(data)
+  }
+
+  deleteItem() {
+    // Your delete item logic here
+  }
+
+  shareItem() {
+    // Your share item logic here
   }
   showQuestions(data: any) {
     console.log(data);
@@ -61,17 +90,17 @@ export class JobsComponent implements OnInit {
     }
     console.log(data);
   }
-  showWorkSheet(data: string) {
-    this.router.navigate(["/dashboard/worksheet", { topic: data }]);
+  showWorkSheet(data: any) {
+    this.router.navigate(["/dashboard/worksheet", { topic: data.topic }]);
   }
-  toggleViewMore(data: any, section: string) {
-    if (section === "introduction") {
-      data.showFullIntroduction = !data.showFullIntroduction;
-    } else if (section === "summary") {
-      data.showFullSummary = !data.showFullSummary;
-    }
-  }
-
+  // toggleViewMore(data: any, section: string) {
+  //   if (section === "introduction") {
+  //     data.showFullIntroduction = !data.showFullIntroduction;
+  //   } else if (section === "summary") {
+  //     data.showFullSummary = !data.showFullSummary;
+  //   }
+  // }
+  
   showInterviewModal(job_id: string) {
     // const currentParams = { ...this.activateRouter.snapshot.queryParams };
     // currentParams['aimodels'] ="openai"
@@ -135,9 +164,16 @@ export class JobsComponent implements OnInit {
     this.modalData = data || null;
     this.isModalVisible = true;
   }
+  openContentModal(mode: "add" | "edit", data?: any){
+    console.log(data);
+    this.modalMode = mode;
+    this.modalData = data || null;
+    this.isDetailModalVisible = true;
+  }
 
   handleModalClose() {
     this.isModalVisible = false;
+    this.isDetailModalVisible = false;
     this.getAllJobs();
   }
 

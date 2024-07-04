@@ -83,52 +83,6 @@
                 D: {{ data?.options?.D }}
               </div>
             </div>
-            <!-- Generated questions start from here -->
-            <hr />
-            <div *ngIf="data.generatedVr && data.generatedVr.length > 0">
-              <div
-                class=""
-                *ngFor="let item of data.generatedVr; let j = index"
-              >
-                <div class="">
-                  <div class="col-md-12 mb-4">
-                    <div class="card-text">
-                      <b style="font-size: 18px"
-                        >Q{{ i + 1 }}.{{ j + 1 }}
-                        {{ item?.generated_vr?.question }}</b
-                      >
-                    </div>
-                  </div>
-                  <div class="col-md-12 mb-4">
-                    <div class="card-description bold_font">
-                      A: {{ item?.generated_vr?.options?.A }}
-                    </div>
-                    <div class="card-description bold_font">
-                      B: {{ item?.generated_vr?.options?.B }}
-                    </div>
-                    <div class="card-description bold_font">
-                      C: {{ item?.generated_vr?.options?.C }}
-                    </div>
-                    <div class="card-description bold_font">
-                      D: {{ item?.generated_vr?.options?.D }}
-                    </div>
-                  </div>
-                </div>
-                <div class="">
-                  <button
-                    class="me-2 btn"
-                    type="button"
-                    (click)="movetoworksheet(item.regenerated_id,j);isMovedToWorksheet[j]=true"
-                    [disabled]="isMovedToWorksheet[j]"
-                  >
-                    Move To WorkSheet
-                  </button>
-                  <!-- <button class="btn" type="button">Reject</button> -->
-                </div>
-                <hr />
-              </div>
-            </div>
-
             <div class="col-md-12">
               <div class="d-flex gap-4">
                 <div>
@@ -145,6 +99,100 @@
                     >Regenerate Question</a
                   >
                 </div>
+                <div>
+                  <a
+                    class="interview_button"
+                    (click)="generateQuestions($event, i, data)"
+                    >Generate Similar Question</a
+                  >
+                </div>
+               
+                <div>
+                  <a class="interview_button" (click)="movetoworksheet(data, i)"
+                    >Move To WorkSheet</a
+                  >
+                </div>
+                <!-- <div>
+                  <a class="interview_button" (click)="delete(data)">Delete</a>
+                </div>
+              </div> -->
+            </div>
+            <!-- Generated questions start from here -->
+            <div *ngIf="data.generatedVr && data.generatedVr.length > 0">
+              <div *ngFor="let item of data.generatedVr; let j = index">
+                <hr />
+                <div class="col-md-12 mb-4">
+                  <div class="card-text">
+                    <b style="font-size: 18px"
+                      >Q{{ i + 1 }}.{{ j + 1 }}
+                      {{ item?.generated_vr?.question }}</b
+                    >
+                  </div>
+                </div>
+                <div class="col-md-12 mb-4">
+                  <div class="card-description bold_font">
+                    A: {{ item?.generated_vr?.options?.A }}
+                  </div>
+                  <div class="card-description bold_font">
+                    B: {{ item?.generated_vr?.options?.B }}
+                  </div>
+                  <div class="card-description bold_font">
+                    C: {{ item?.generated_vr?.options?.C }}
+                  </div>
+                  <div class="card-description bold_font">
+                    D: {{ item?.generated_vr?.options?.D }}
+                  </div>
+                </div>
+                <div>
+                  <!-- <button
+                    class="me-2 "
+                    type="button"
+                    (click)="movetoworksheet(item.regenerated_id, j);"
+                    [disabled]="isMovedToWorksheet[j]"
+                  >
+                    Move To WorkSheet
+                  </button> -->
+                  <div class="col-md-12">
+                    <div class="d-flex gap-4">
+                      <div>
+                        <a
+                          class="interview_button"
+                          (click)="generateQuestions($event, i, item)"
+                          >Generate VR</a
+                        >
+                      </div>
+                      <div>
+                        <a
+                          class="interview_button"
+                          (click)="generateQuestions($event, i, item)"
+                          >Regenerate Question</a
+                        >
+                      </div>
+                      <div>
+                        <a
+                          class="interview_button"
+                          (click)="generateQuestions($event, i, data)"
+                          >Generate Similar Question</a
+                        >
+                      </div>
+                      <div>
+                        <a
+                          class="interview_button"
+                          (click)="movetoworksheet(item.regenerated_id, j)"
+                          [aria-readonly]="isMovedToWorksheet[j]"
+                          
+                          >Move To WorkSheet</a
+                        >
+                      </div>
+                      <!-- <div>
+                        <a class="interview_button" (click)="delete(item)"
+                          >Delete</a
+                        >
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+                <hr />
               </div>
             </div>
           </div>

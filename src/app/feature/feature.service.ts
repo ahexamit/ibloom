@@ -318,12 +318,18 @@ public get_all_questions(body:any): Observable<any> {
    /**Add new generate VR Data */
    public generateVr(
     data: any,
+    datatype:string
    
   ): Observable<any> {
     const endPoint = 'visualizing_question';
     const url = `${this.sharedservice.base_url}${endPoint}`;
     const body = new FormData();
-    body.append('question_id', data?.question_id);
+    if(datatype==='question'){
+      body.append('question_id', data?.question_id);
+    }else{
+      body.append('regenerated_id', data?.regenerated_id);
+
+    }
     body.append('user_input', data?.user_input);
     return this.http.post<any>(url, body).pipe(
       map((data) => {
@@ -334,12 +340,18 @@ public get_all_questions(body:any): Observable<any> {
  /**Add movetoworksheet VR Data */
   public movetoworksheet(
     data: any,
-   
+   datatype:string
   ): Observable<any> {
     const endPoint = 'approve_question';
     const url = `${this.sharedservice.base_url}${endPoint}`;
     const body = new FormData();
-    body.append('regenerated_id', data?.regenerated_id);
+    if(datatype==='question'){
+      body.append('question_id', data?.question_id);
+    }else{
+      body.append('regenerated_id', data?.question_id);
+
+    }
+    // body.append('regenerated_id', data?.regenerated_id);
     return this.http.post<any>(url, body).pipe(
       map((data) => {
         return data;

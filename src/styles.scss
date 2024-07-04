@@ -111,14 +111,14 @@ button:disabled {
 }
 
 .p-button.p-button-icon-only {
-    color: #84828A;
-    background: transparent;
+    color: white;
+    // background: transparent;
     border: none;
 }
 
 .p-button-icon-only:hover {
-    color: #84828A !important;
-    background: transparent !important;
+    color:white !important;
+    // background: transparent !important;
     border: none !important;
 }
 

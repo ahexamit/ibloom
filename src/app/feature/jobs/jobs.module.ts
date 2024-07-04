@@ -10,6 +10,15 @@ import { InterviewComponent } from './interview/interview.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { AccordionModule } from 'primeng/accordion';
 import { WorksheetComponent } from './worksheet/worksheet.component';
+import { MenuModule } from 'primeng/menu';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenubarModule } from 'primeng/menubar';
+
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ButtonModule } from 'primeng/button';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DetailsModalComponent } from './details-modal/details-modal.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +26,7 @@ import { WorksheetComponent } from './worksheet/worksheet.component';
     AddeditmodalComponent,
     InterviewComponent,
     WorksheetComponent,
+    DetailsModalComponent,
 
   ],
   imports: [
@@ -26,7 +36,16 @@ import { WorksheetComponent } from './worksheet/worksheet.component';
     SharedModule,
     FileUploadModule,
     // MatDialogModule
-    AccordionModule
+    AccordionModule,
+    MenuModule,
+    TooltipModule,
+    MenubarModule,
+    SplitButtonModule,
+    OverlayPanelModule,
+    ButtonModule,
+    InputTextareaModule,
+       MenuModule,
+    TooltipModule
   ]
 })
 export class JobsModule { }

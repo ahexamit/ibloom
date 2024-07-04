@@ -34,13 +34,15 @@ ul {
 }
 .activeSidebarActive {
   a {
-    color: #696cff !important;
+    // color: #696cff !important;
+    color: #fff !important;
     font-weight: 600 !important;
   }
   .icon {
     font-weight: 600 !important;
   }
-  background: #696cff29;
+  // background: #696cff29;
+  background: linear-gradient(to right, #1ED7A5, #0E62AA);
   font-weight: 500 !important;
   border-radius: 5px;
 }

@@ -125,30 +125,30 @@ get_questions(){
     });
   }
 
-  generateQuestions(event: Event, index: number, data: any): void {
-    const obj = {
-      question_id: data?.question_id,
-      user_input: ''
-    };
+  // generateQuestions(event: Event, index: number, data: any): void {
+  //   const obj = {
+  //     question_id: data?.question_id,
+  //     user_input: ''
+  //   };
   
-    this.featuredService.generateVr(obj).subscribe((res) => {
-      console.log('Response from generateVr:', res); // Log the response for debugging
+  //   this.featuredService.generateVr(obj).subscribe((res) => {
+  //     console.log('Response from generateVr:', res); // Log the response for debugging
   
-      // Check if res.generated_vr is an object
-      if (typeof res === 'object' && res !== null) {
-        const normalizedResponse = this.normalizeKeys(res);
-        if (!data.generatedVr) {
-          data.generatedVr = [];
-        }
-        // data.generatedVr.push(normalizedResponse); 
-        this.datageneratedVr = data.generatedVr.push(normalizedResponse);
-     this.isMovedToWorksheet = new Array(this.datageneratedVr?.length).fill(false);
+  //     // Check if res.generated_vr is an object
+  //     if (typeof res === 'object' && res !== null) {
+  //       const normalizedResponse = this.normalizeKeys(res);
+  //       if (!data.generatedVr) {
+  //         data.generatedVr = [];
+  //       }
+  //       // data.generatedVr.push(normalizedResponse); 
+  //       this.datageneratedVr = data.generatedVr.push(normalizedResponse);
+  //    this.isMovedToWorksheet = new Array(this.datageneratedVr?.length).fill(false);
 
-      } else {
-        console.error('Unexpected structure for the response:', res);
-      }
-    });
-  }
+  //     } else {
+  //       console.error('Unexpected structure for the response:', res);
+  //     }
+  //   });
+  // }
   
   normalizeKeys(obj: any): any {
     const normalizedObj: any = {};
@@ -166,12 +166,12 @@ get_questions(){
     const obj ={
       regenerated_id:data
     }
-    this.featuredService.movetoworksheet(obj).subscribe((res)=>{
-      console.log(res);
-      if( res.message ="Status updated to approved successfully!")
-      this.toaster.success('Question Succesfully move to worksheet')
-      this.isMovedToWorksheet[index] = true;
-    })
+    // this.featuredService.movetoworksheet(obj).subscribe((res)=>{
+    //   console.log(res);
+    //   if( res.message ="Status updated to approved successfully!")
+    //   this.toaster.success('Question Succesfully move to worksheet')
+    //   this.isMovedToWorksheet[index] = true;
+    // })
   }
 
   onDropdownChange(event: any, params: string): void {
