@@ -192,5 +192,9 @@ cursor: pointer;
 }
 
 .viewmore{
-  color: linear-gradient(to right, #1ED7A5, #0E62AA) !important;
+  background-image: linear-gradient(to right, #1ED7A5, #0E62AA) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  display: inline-block !important;
 }
