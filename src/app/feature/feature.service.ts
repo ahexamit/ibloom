@@ -271,11 +271,15 @@ export class FeatureService {
  
     }
            /**get approved question */
-           public approvedquestion(): Observable<any> {
+           public approvedquestion(body:any): Observable<any> {
             const endPoint = 'get_approved_questions';
             const url = `${this.sharedservice.base_url}${endPoint}`;
-      
-            return this.http.get(url).pipe(
+            const params = new HttpParams()
+            .set('grade', body?.grade)
+            .set('subject', body?.subject)
+            .set('topic', body?.topic)
+            .set('difficulty', body?.diffucilty);
+            return this.http.get(url,{ params }).pipe(
               map((data) => {
                 return data;
               })

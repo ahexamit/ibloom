@@ -72,13 +72,13 @@ export class WorksheetComponent {
   }
   ngOnInit(): void {
     this.get_topics();
-    this.get_questions();
-    // this.routes.paramMap.subscribe((params) => {
-    //   console.log(params);
-    //   this.paramTopic = params.get("topic");
-    //   this.paramGrade = params.get("grade");
-    //   this.paramsubject = params.get("subject");
-    // });
+    // this.get_questions();
+    this.routes.paramMap.subscribe((params) => {
+      console.log(params);
+      this.paramTopic = params.get("topic");
+      this.paramGrade = params.get("grade");
+      this.paramsubject = params.get("subject");
+    });
   }
 
   get_topics(): void {
@@ -88,7 +88,14 @@ export class WorksheetComponent {
     });
   }
 get_questions(){
-  this.featuredService.approvedquestion().subscribe((res)=>{
+  if (!this.selectedTopic) return;
+  const obj = {
+    topic: this.selectedTopic,
+    grade: this.selectedGrade,
+    subject: this.selectedSubject,
+    diffucilty: this.selectedDiffucilty,
+  };
+  this.featuredService.approvedquestion(obj).subscribe((res)=>{
     console.log(res)
     this.dummyJson = res.approved_questions;
     this.filteredJobs=res.approved_questions
@@ -107,7 +114,7 @@ get_questions(){
       this.selectedDiffucilty = this.diffuciltyOptions[0].value;
     }
     this.setSelectedTopic();
-    // this.get_all_questions();
+    this.get_questions();
   }
 
   get_all_questions(): void {
@@ -193,6 +200,7 @@ get_questions(){
         break;
     }
     // this.get_all_questions();
+    this.get_questions();
   }
   setSelectedTopic(): void {
     if (this.selectedTopic) {

@@ -91,7 +91,7 @@ export class JobsComponent implements OnInit {
     console.log(data);
   }
   showWorkSheet(data: any) {
-    this.router.navigate(["/dashboard/worksheet", { topic: data.topic }]);
+    this.router.navigate(["/dashboard/worksheet", {topic: data?.topic, grade: data?.grade , subject:data?.subject }]);
   }
   // toggleViewMore(data: any, section: string) {
   //   if (section === "introduction") {
