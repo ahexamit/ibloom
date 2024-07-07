@@ -9,18 +9,45 @@
         placeholder="Search Topics"
         (input)="filterJobs($event)"
       />
+      
+
     </div>
-    <button class="btn" (click)="showDialog('add')">GENERATE CONTENT</button> 
+    <div class="d-flex gap-2">
+      <div class="p-field">
+        <p-dropdown
+          [options]="gradeOptions"
+          placeholder="Select grade"
+          (onChange)="onDropdownChange($event, 'grade')"
+        ></p-dropdown>
+      </div>
+      <div class="p-field">
+        <p-dropdown
+          [options]="subjectOptions"
+          placeholder="Select Subject"
+          (onChange)="onDropdownChange($event, 'subject')"
+        ></p-dropdown>
+      </div>
+     
+      <div class="p-field">
+        <p-dropdown
+          [options]="dropdownOptions"
+          placeholder="Select Topic"
+          (onChange)="onDropdownChange($event, 'topic')"
+        ></p-dropdown>
+      </div>
+      <button class="btn" (click)="showDialog('add')">GENERATE CONTENT</button>
+
+    </div>
   </div>
-  <div class="">
+  <div class="mt-4">
     <!-- <div class="cols"> -->
       <div class="cols" *ngIf="filteredJobs?.length > 0">
       <div class="item" *ngFor="let data of filteredJobs">
-        <div class="card p-4" style="position: relative;">
+        <div class="card py-3 px-4" style="position: relative;">
           <div class="row">
-            <div class="col-md-12 mb-4">
+            <div class="col-md-12 pb-3">
               <div class="d-flex justify-content-between">
-                <div class="card-text"><strong style="font-size: 24px;">{{ data?.topic }}</strong></div>
+                <div class="card-text"><strong style="font-size: 20px;">{{ data?.topic }}</strong></div>
                 <div class="dropdown" >
                   <p-menu #menu [popup]="true" class="custom_menu_dropdown" [model]="items" [data]="data"></p-menu>
                   <i class="pi pi-ellipsis-v" (click)="menu.toggle($event);gettingdata(data)"></i>

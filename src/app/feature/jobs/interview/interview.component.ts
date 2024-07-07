@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FeatureService } from '../../feature.service';
-import { interview } from 'src/app/model/profile';
-import * as moment from 'moment-timezone';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-interview',
@@ -14,30 +9,10 @@ import { OverlayPanel } from 'primeng/overlaypanel';
   styleUrls: ['./interview.component.scss'],
 })
 export class InterviewComponent implements OnInit {
-  visible: boolean = false;
-  isInterviewContext: boolean = false;
-  form: FormGroup;
-  allJobs: interview[] = [];
-  isSidebarVisible = false;
-  flag = false;
-  modalMode: 'add' | 'edit' | null = null;
-  modalData: any = null;
-  isModalVisible = false;
-  selectedJob_id!: string;
-  job_id!: string;
-  interview_id: string = '';
   filteredJobs: any[] = [];
   searchQuery: string = '';
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-  user_name: string = 'User';
-  pagesArray: any[] = [];
-  lastSegment!: string;
-  highlightedSessionId: string | null = null;
-  isModalOpen!: boolean;
   dummyJson: any[] = [];
   selectedTopic!: any;
-  openAccordions: boolean[] = [];
   dropdownOptions: any = [];
   gradeOptions: any = [{ label: 'First', value: 'First' }];
   subjectOptions: any = [{ label: 'Maths', value: 'Maths' }];
@@ -53,32 +28,18 @@ export class InterviewComponent implements OnInit {
   paramTopic!: string | null;
   paramGrade!: string | null;
   paramsubject!: string | null;
-  generatedVr: any;
   isMovedToWorksheet: boolean[] = [];
+  showtextbox: boolean[][] = [];
+  message: string[][] = [];
 
-  datageneratedVr: any;
   constructor(
     private featuredService: FeatureService,
-    private fb: FormBuilder,
     private routes: ActivatedRoute,
-    private router: Router,
     private toaster: ToastrService
   ) {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-    });
     console.log(this.filteredJobs, 'worksheet');
   }
-  ///start////////////////////////////////////////
-  message: string = '';
-  showtextbox: boolean = false;
 
-  toggleOverlay(event: Event, op: OverlayPanel) {
-    op.toggle(event);
-  }
-
-  // end/////////////////////////////////////////////////////
   ngOnInit(): void {
     this.get_topics();
     this.routes.paramMap.subscribe((params) => {
@@ -86,6 +47,14 @@ export class InterviewComponent implements OnInit {
       this.paramTopic = params.get('topic');
       this.paramGrade = params.get('grade');
       this.paramsubject = params.get('subject');
+    });
+    this.initializeMessages();
+  }
+
+  initializeMessages(): void {
+    this.dummyJson.forEach((_, i) => {
+      this.message[i] = [''];
+      this.showtextbox[i] = [false];
     });
   }
 
@@ -95,19 +64,17 @@ export class InterviewComponent implements OnInit {
       this.initializeSelectedTopic();
     });
   }
+
   sendMessage() {
     // Call API to send the message
     console.log('Message sent');
   }
 
-  saveMessage(op: OverlayPanel) {
-    // Call API to save the message
-    console.log('Message saved:', this.message);
-    op.hide();
-  }
-  showtextarea() {
-    this.showtextbox = true;
-  }
+  // saveMessage() {
+  //   // Call API to save the message
+  //   console.log('Message saved:', this.message);
+  //   op.hide();
+  // }
 
   initializeSelectedTopic(): void {
     if (this.paramTopic && this.paramGrade && this.paramsubject) {
@@ -137,15 +104,47 @@ export class InterviewComponent implements OnInit {
     this.featuredService.get_all_questions(obj).subscribe((res) => {
       this.dummyJson = res.questions_list;
       this.filteredJobs = res.questions_list;
+      this.initializeMessages();
     });
   }
 
-  generateQuestions(event: Event, index: number, data: any): void {
-    console.log(this.message);
+  showtextarea(index: number, subIndex: number = 0) {
+    if (!this.showtextbox[index]) {
+      this.showtextbox[index] = [];
+    }
+    this.showtextbox[index][subIndex] = true;
+  }
+
+  hideTextArea(index: number, subIndex: number = 0) {
+    if (this.showtextbox[index] && this.showtextbox[index][subIndex] !== undefined) {
+      this.showtextbox[index][subIndex] = false;
+    }
+  }
+
+  generateQuestions(
+    event: Event,
+    index: number,
+    data: any,
+    textareaRef: HTMLTextAreaElement | null,
+    parentIndex: number = -1
+  ): void {
+    let message = '';
+
+    if (parentIndex === -1) {
+      if (this.message[index] && this.message[index][0]) {
+        message = this.message[index][0];
+      }
+    } else {
+      if (this.message[parentIndex] && this.message[parentIndex][index]) {
+        message = this.message[parentIndex][index];
+      }
+    }
+
+    console.log(message);
     console.log(data, data?.question_id, data?.regenerated_id);
 
     let obj: any = {
-      user_input: this.message,
+      user_input: message,
     };
     let datatype: string = '';
     if (data.question_id) {
@@ -153,7 +152,6 @@ export class InterviewComponent implements OnInit {
       obj.question_id = data?.question_id;
     } else {
       datatype = 'requestion';
-
       obj.regenerated_id = data?.regenerated_id;
     }
     console.log(obj);
@@ -162,18 +160,24 @@ export class InterviewComponent implements OnInit {
       console.log('Response from generateVr:', res); // Log the response for debugging
 
       if (typeof res === 'object' && res !== null) {
-        this.toaster.success('Question successfully generate');
+        if (parentIndex === -1) {
+          this.showtextbox[index] = [];
+          this.message[index] = [''];
+        } else {
+          this.showtextbox[parentIndex][index] = false;
+          this.message[parentIndex][index] = '';
+        }
 
-        this.showtextbox = false;
-        this.message = '';
+        if (textareaRef) {
+          textareaRef.value = '';
+        }
+
         const normalizedResponse = this.normalizeKeys(res);
         if (!data.generatedVr) {
           data.generatedVr = [];
         }
 
         data.generatedVr.push(normalizedResponse);
-
-        // Update the isMovedToWorksheet array only for the new question
         this.isMovedToWorksheet.push(false);
       } else {
         console.error('Unexpected structure for the response:', res);
@@ -207,7 +211,7 @@ export class InterviewComponent implements OnInit {
     } else {
       datatype = 'requestion';
 
-      obj.question_id = data;
+      obj.question_id = data.regenerated_id;
     }
     console.log(obj);
     console.log(data);
@@ -220,7 +224,27 @@ export class InterviewComponent implements OnInit {
       }
     });
   }
-  delete(data: any) {}
+
+
+
+  delete(data: any) {
+    console.log(data)
+    let obj :any={}
+    let datatype: string = '';
+    if (data.question_id) {
+      datatype = 'question';
+      obj.question_id = data?.question_id;
+    } else {
+      datatype = 'requestion';
+
+      obj.question_id = data.regenerated_id;
+    }
+    this.featuredService.delete_questions(obj,datatype).subscribe((res)=>{
+      console.log(res);
+      this.toaster.success(res.message);
+    })
+  }
+
   onDropdownChange(event: any, params: string): void {
     const selectedValue = event.value;
     switch (params) {
@@ -241,6 +265,7 @@ export class InterviewComponent implements OnInit {
     }
     this.get_all_questions();
   }
+
   setSelectedTopic(): void {
     if (this.selectedTopic) {
       const selectedOption = this.dropdownOptions.find(
@@ -252,38 +277,13 @@ export class InterviewComponent implements OnInit {
     }
   }
 
-  isAccordionOpen(index: number): boolean {
-    return this.openAccordions[index];
-  }
-  showInterviewModal(job_id: string) {
-    this.selectedJob_id = job_id;
-    console.log(job_id);
-    this.visible = true;
-    this.form.reset(); // Reset the form when showing the modal
-  }
-
-  closeModal() {
-    this.visible = false;
-  }
-
-  private getAllInterviews(): void {
-    this.featuredService.getAllInterviews('get_interviews').subscribe({
-      next: (res: any) => {
-        this.allJobs = res.session_interviews;
-        this.job_id = res.session_interviews.job_id;
-        this.interview_id = res.session_interviews.session_id;
-        // this.filterJobs();
-        console.log(this.allJobs);
-      },
-    });
-  }
-
   filterJobs(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
     this.filteredJobs = this.dummyJson.filter((job) =>
       job['question'].toLowerCase().includes(searchTerm)
     );
   }
+
   getStarColor(difficulty: string): string {
     let color = '';
     switch (difficulty) {
@@ -301,6 +301,7 @@ export class InterviewComponent implements OnInit {
     }
     return color;
   }
+
   getStars(difficulty: string): number[] {
     let stars = 0;
     switch (difficulty) {
@@ -317,114 +318,5 @@ export class InterviewComponent implements OnInit {
         stars = 0;
     }
     return new Array(stars);
-  }
-
-  get paginatedJobs() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredJobs.slice(start, start + this.itemsPerPage);
-  }
-
-  get totalPages() {
-    return Math.ceil(this.filteredJobs.length / this.itemsPerPage);
-  }
-
-  setPage(page: number) {
-    if (page < 1 || page > this.totalPages) return;
-    this.currentPage = page;
-    this.updatePagesArray();
-  }
-
-  updatePagesArray() {
-    this.pagesArray = [];
-    const totalPages = this.totalPages;
-    const currentPage = this.currentPage;
-
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) {
-        this.pagesArray.push(i);
-      }
-    } else {
-      if (currentPage <= 3) {
-        this.pagesArray = [1, 2, 3, 4, '...', totalPages];
-      } else if (currentPage >= totalPages - 2) {
-        this.pagesArray = [
-          1,
-          '...',
-          totalPages - 3,
-          totalPages - 2,
-          totalPages - 1,
-          totalPages,
-        ];
-      } else {
-        this.pagesArray = [
-          1,
-          '...',
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
-          '...',
-          totalPages,
-        ];
-      }
-    }
-  }
-
-  startMeeting(user_name: string, job_id: string, interview_id: string) {
-    console.log('starthistoryblock');
-    console.log(user_name, interview_id);
-    this.user_name = user_name;
-    this.interview_id = interview_id;
-    this.isModalOpen = true;
-
-    this.flag = true;
-    console.log(this.interview_id);
-
-    this.urlParamChanged();
-
-    this.isSidebarVisible = !this.isSidebarVisible;
-    this.isInterviewContext = !this.isInterviewContext;
-    console.log(this.isSidebarVisible);
-
-    this.highlightedSessionId = interview_id; // Highlight the session row
-  }
-
-  urlParamChanged(): void {
-    const currentParams = { ...this.routes.snapshot.queryParams };
-    currentParams['session_id'] = this.interview_id;
-    this.router.navigate([], {
-      relativeTo: this.routes,
-      queryParams: currentParams,
-      queryParamsHandling: 'merge',
-    });
-    currentParams['username'] = this.user_name;
-    this.router.navigate([], {
-      relativeTo: this.routes,
-      queryParams: currentParams,
-      queryParamsHandling: 'merge',
-    });
-  }
-
-  handleSidebarHide() {
-    this.isModalOpen = false;
-    // this.isSidebarVisible = false;
-    this.isInterviewContext = false;
-  }
-
-  convertToIST(dateString: string): string {
-    return moment
-      .tz(dateString, 'GMT')
-      .tz('Asia/Kolkata')
-      .format('YYYY-MM-DD hh:mm:ss A');
-  }
-
-  showDialog(mode: 'add' | 'edit', data?: any) {
-    console.log(data);
-    this.modalMode = mode;
-    this.modalData = data || null;
-    this.isModalVisible = true;
-  }
-  handleModalClose() {
-    this.isModalVisible = false;
-    // this.getAllJobs();
   }
 }

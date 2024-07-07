@@ -1,7 +1,5 @@
 <div class="table-content px-3">
-  <div
-    class="d-flex justify-content-between job_header bg-white py-3 px-3 align-items-center"
-  >
+  <div class="d-flex justify-content-between job_header bg-white py-3 px-3 align-items-center">
     <div class="position-relative" style="width: 30%">
       <i class="pi pi-search position-absolute" style="top: 28%; left: 2%"></i>
       <input
@@ -21,7 +19,7 @@
           (onChange)="onDropdownChange($event, 'grade')"
         ></p-dropdown>
       </div>
-      <div class="p-field">
+      <div class="p-field dropdown_box">
         <p-dropdown
           [options]="subjectOptions"
           placeholder="Select Subject"
@@ -29,15 +27,15 @@
           (onChange)="onDropdownChange($event, 'subject')"
         ></p-dropdown>
       </div>
-      <div class="p-field">
+      <div class="p-field dropdown_box">
         <p-dropdown
           [options]="diffuciltyOptions"
           placeholder="Select diffucilty"
           [(ngModel)]="selectedDiffucilty"
-          (onChange)="onDropdownChange($event, 'diffucilty')"
+          (onChange)="onDropdownChange($event, 'difficulty')"
         ></p-dropdown>
       </div>
-      <div class="p-field">
+      <div class="p-field dropdown_box">
         <p-dropdown
           [options]="dropdownOptions"
           placeholder="Select Topic"
@@ -47,16 +45,16 @@
       </div>
     </div>
   </div>
-  <div class="">
-    <div class="cols" *ngIf="filteredJobs.length > 0">
+  <div>
+
+    <!-- yaha sai main loop cahlooo h  -->
+    <div class="cols" *ngIf="filteredJobs.length > 0; else noJobsTemplate">
       <div class="item" *ngFor="let data of filteredJobs; let i = index">
         <div class="card p-4">
           <div class="row">
             <div class="col-md-12 mb-4">
               <div class="card-text">
-                <b style="font-size: 18px"
-                  >Q{{ i + 1 }}. {{ data?.question }}</b
-                >
+                <b style="font-size: 18px ; color:#4D4D4D; font-weight: 600" class="question">Q{{ i + 1 }}. {{ data?.question }}</b>
                 &nbsp;
                 <ng-container
                   *ngFor="let star of getStars(data?.difficulty); let j = index"
@@ -69,144 +67,113 @@
                 </ng-container>
               </div>
             </div>
-            <div class="col-md-12 mb-4">
-              <div class="card-description bold_font">
-                A: {{ data?.options?.A }}
-              </div>
-              <div class="card-description bold_font">
-                B: {{ data?.options?.B }}
-              </div>
-              <div class="card-description bold_font">
-                C: {{ data?.options?.C }}
-              </div>
-              <div class="card-description bold_font">
-                D: {{ data?.options?.D }}
+            <div class="col-md-12 mb-2">
+              <div class="card-description bold_font">A: {{ data?.options?.A }}</div>
+              <div class="card-description bold_font">B: {{ data?.options?.B }}</div>
+              <div class="card-description bold_font">C: {{ data?.options?.C }}</div>
+              <div class="card-description bold_font">D: {{ data?.options?.D }}</div>
+            </div>
+            <div *ngIf="showtextbox[i][0]" class="col-lg-8 mb-2">
+              <div class="d-flex gap-2 w-100">
+                <div class="w-75">
+            <!-- yaha start  questions text area -->
+
+                  <textarea
+                    class="w-100 textarea"
+                    placeholder="Instructions for AI"
+                    [(ngModel)]="message[i][0]"
+                  ></textarea>
+                </div>
+                <div>
+                  <button  class="btn mt-1" (click)="generateQuestions($event, i, data, null)">Generate</button>
+                </div>
               </div>
             </div>
             <div class="col-md-12">
               <div class="d-flex gap-4">
                 <div>
-                  <a
-                    class="interview_button"
-                    (click)="generateQuestions($event, i, data)"
-                    >Generate VR</a
-                  >
+                  <a  style="color:#23769E;" class="interview_button" (click)="showtextarea(i)">Generate VR</a>
                 </div>
                 <div>
-                  <a
-                    class="interview_button"
-                    (click)="generateQuestions($event, i, data)"
-                    >Regenerate Question</a
-                  >
+                  <a  style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, i, data, null)">Regenerate Question</a>
                 </div>
                 <div>
-                  <a
-                    class="interview_button"
-                    (click)="generateQuestions($event, i, data)"
-                    >Generate Similar Question</a
-                  >
+                  <a style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, i, data, null)">Generate Similar Question</a>
                 </div>
-               
                 <div>
-                  <a class="interview_button" (click)="movetoworksheet(data, i)"
-                    >Move To WorkSheet</a
-                  >
+                  <a style="color:#23769E;" class="interview_button" (click)="movetoworksheet(data, i)">Move To WorkSheet</a>
                 </div>
-                <!-- <div>
-                  <a class="interview_button" (click)="delete(data)">Delete</a>
+                <div>
+                  <a style="color:#23769E;" class="interview_button" (click)="delete(data)">Delete</a>
                 </div>
-              </div> -->
+              </div>
             </div>
-            <!-- Generated questions start from here -->
+
+            <!-- yaha end mains questions  -->
+
+
+
+            <!-- yaha start sub questions  -->
+
             <div *ngIf="data.generatedVr && data.generatedVr.length > 0">
               <div *ngFor="let item of data.generatedVr; let j = index">
                 <hr />
                 <div class="col-md-12 mb-4">
                   <div class="card-text">
-                    <b style="font-size: 18px"
-                      >Q{{ i + 1 }}.{{ j + 1 }}
-                      {{ item?.generated_vr?.question }}</b
-                    >
+                    <b style="font-size: 18px">Q{{ i + 1 }}.{{ j + 1 }} {{ item?.generated_vr?.question }}</b>
                   </div>
                 </div>
                 <div class="col-md-12 mb-4">
-                  <div class="card-description bold_font">
-                    A: {{ item?.generated_vr?.options?.A }}
-                  </div>
-                  <div class="card-description bold_font">
-                    B: {{ item?.generated_vr?.options?.B }}
-                  </div>
-                  <div class="card-description bold_font">
-                    C: {{ item?.generated_vr?.options?.C }}
-                  </div>
-                  <div class="card-description bold_font">
-                    D: {{ item?.generated_vr?.options?.D }}
-                  </div>
+                  <div class="card-description bold_font">A: {{ item?.generated_vr?.options?.A }}</div>
+                  <div class="card-description bold_font">B: {{ item?.generated_vr?.options?.B }}</div>
+                  <div class="card-description bold_font">C: {{ item?.generated_vr?.options?.C }}</div>
+                  <div class="card-description bold_font">D: {{ item?.generated_vr?.options?.D }}</div>
                 </div>
-                <div>
-                  <!-- <button
-                    class="me-2 "
-                    type="button"
-                    (click)="movetoworksheet(item.regenerated_id, j);"
-                    [disabled]="isMovedToWorksheet[j]"
-                  >
-                    Move To WorkSheet
-                  </button> -->
-                  <div class="col-md-12">
-                    <div class="d-flex gap-4">
-                      <div>
-                        <a
-                          class="interview_button"
-                          (click)="generateQuestions($event, i, item)"
-                          >Generate VR</a
-                        >
-                      </div>
-                      <div>
-                        <a
-                          class="interview_button"
-                          (click)="generateQuestions($event, i, item)"
-                          >Regenerate Question</a
-                        >
-                      </div>
-                      <div>
-                        <a
-                          class="interview_button"
-                          (click)="generateQuestions($event, i, data)"
-                          >Generate Similar Question</a
-                        >
-                      </div>
-                      <div>
-                        <a
-                          class="interview_button"
-                          (click)="movetoworksheet(item.regenerated_id, j)"
-                          [aria-readonly]="isMovedToWorksheet[j]"
-                          
-                          >Move To WorkSheet</a
-                        >
-                      </div>
-                      <!-- <div>
-                        <a class="interview_button" (click)="delete(item)"
-                          >Delete</a
-                        >
-                      </div> -->
+                <div *ngIf="showtextbox[i][j + 1]" class="col-lg-8 mb-2">
+                  <div class="d-flex gap-2 w-100">
+                    <div class="w-75">
+            <!-- yaha start sub questions text area -->
+
+                      <textarea
+                        class="w-100 textarea"
+                        placeholder="Instructions for AI"
+                        [(ngModel)]="message[i][j]"
+                      ></textarea>
+                    </div>
+                    <div>
+                      <button class="btn mt-1" (click)="generateQuestions($event, j, item, null, i)">Generate</button>
                     </div>
                   </div>
                 </div>
-                <hr />
+                <div class="col-md-12">
+                  <div class="d-flex gap-4">
+                    <div>
+                      <a style="color:#23769E;" class="interview_button " (click)="showtextarea(i, j + 1)">Generate VR</a>
+                    </div>
+                    <div>
+                      <a style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, j, item, null, i)">Regenerate Question</a>
+                    </div>
+                    <div>
+                      <a style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, j, item, null, i)">Generate Similar Question</a>
+                    </div>
+                    <div>
+                      <a style="color:#23769E;" class="interview_button" (click)="movetoworksheet(item, i)">Move To WorkSheet</a>
+                    </div>
+                    <div>
+                      <a style="color:#23769E;" class="interview_button" (click)="delete(item)">Delete</a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <ng-template #noJobsTemplate>
+      <div class="no-jobs-found d-flex justify-content-center align-items-center" style="height: 50vh">
+        <h3>No matching Topics found</h3>
+      </div>
+    </ng-template>
   </div>
-
-  <ng-template #noJobsTemplate>
-    <div
-      class="no-jobs-found d-flex justify-content-center align-items-center"
-      style="height: 50vh"
-    >
-      <h3>No matching Topics found</h3>
-    </div>
-  </ng-template>
 </div>

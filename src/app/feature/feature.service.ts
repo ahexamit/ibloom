@@ -285,21 +285,7 @@ export class FeatureService {
               })
             );
           }
-     /**get_all_questions */
-    //  public get_all_questions(data:any): Observable<any> {
-    //   const endPoint = 'questions';
-    //   const url = `${this.sharedservice.base_url}${endPoint}`;
-    //   const body = new FormData();
-    // body.append('grade', 'First');
-    // body.append('subject', 'Maths');
-    // body.append('topic', 'First');
-    // body.append('difficulty', 'easy');
-    //   return this.http.get(url,body).pipe(
-    //     map((data) => {
-    //       return data;
-    //     })
-    //   );
-    // }
+   
     /** get_all_questions */
 /** get_all_questions */
 public get_all_questions(body:any): Observable<any> {
@@ -362,4 +348,27 @@ public get_all_questions(body:any): Observable<any> {
       })
     );
   };
+    /**Delete API questions  */
+
+    public delete_questions(
+      data: any,
+     datatype:string
+    ): Observable<any> {
+      const endPoint = 'delete_questions';
+      const url = `${this.sharedservice.base_url}${endPoint}`;
+      const body = new FormData();
+      if(datatype==='question'){
+        body.append('question_id', data?.question_id);
+      }else{
+        body.append('regenerated_id', data?.question_id);
+  
+      }
+      // body.append('regenerated_id', data?.regenerated_id);
+      return this.http.post<any>(url, body).pipe(
+        map((data) => {
+          return data;
+        })
+      );
+    };
+
 }

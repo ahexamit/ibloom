@@ -93,6 +93,10 @@
       >
         Age is required
       </div>
+      <!-- <div *ngIf="form.get('age')?.errors?.pattern && (form.get('age')?.dirty || form.get('age')?.touched)"
+     class="text-danger">
+  Age must contain only numbers
+</div> -->
     </div>
     <div class="form-group" *ngIf="mode === 'edit'">
       <label for="skills">Difficulty</label>

@@ -31,9 +31,12 @@ export class JobsComponent implements OnInit {
   interview_id: any = "";
   user_name: string = "User";
   parsedLessons: any;
-
+  gradeOptions: any = [{ label: 'First', value: 'First' }];
+  subjectOptions: any = [{ label: 'Maths', value: 'Maths' }];
+  dropdownOptions: any = [];
   items!: any[];
   cardData: any;
+  selectedTopic: any;
   constructor(
     private featuredService: FeatureService,
     private fb: FormBuilder,
@@ -50,6 +53,7 @@ export class JobsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllJobs();
+    this.get_topics();
     this.items = [
       { label:'Generated Questions',icon: 'pi pi-refresh', title: ' Generated Questions', command: (event:any) => this.showDialog('edit',this.cardData) },
       { label:'Questions',icon: 'pi pi-question-circle', title: 'Questions', command: () => this.showQuestions(this.cardData) },
@@ -62,6 +66,32 @@ export class JobsComponent implements OnInit {
     // this.featuredService.getallQuestions().subscribe((res)=>{
     //   console.log(res)
     // })
+  }
+  get_topics(): void {
+    this.featuredService.get_topics().subscribe((res) => {
+      this.dropdownOptions = res.topics_list;
+      // this.initializeSelectedTopic();
+    });
+  };
+  onDropdownChange(event: any, params: string): void {
+    // const selectedValue = event.value;
+    // switch (params) {
+    //   case 'topic':
+    //     this.selectedTopic = selectedValue;
+    //     break;
+    //   case 'grade':
+    //     this.selectedGrade = selectedValue;
+    //     break;
+    //   case 'subject':
+    //     this.selectedSubject = selectedValue;
+    //     break;
+    //   case 'difficulty':
+    //     this.selectedDiffucilty = selectedValue;
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this.get_all_questions();
   }
   editItem(event:any) {
     // Your edit item logic here

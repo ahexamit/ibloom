@@ -46,9 +46,10 @@ export class AddeditmodalComponent {
   ) {
     this.form = this.fb.group({
       topic: ["", Validators.required],
-      age: ["", Validators.required],
-      grade: [{ value: "First", disabled: true }],
-      subject: [{ value: "Maths", disabled: true }],
+      // age: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      age: ['', [Validators.required]],
+      grade: [{ value: "First" }],
+      subject: [{ value: "Maths" }],
       lesson: ["", [Validators.required]],
       difficulty: [""],
     });

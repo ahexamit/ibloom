@@ -1,8 +1,8 @@
 <div class="sidebar">
-  <div class="sidebar_header justify-content-center flex">
+  <div class="sidebar_header flex">
     <div>
       <img
-      src="../../../assets/images/logos/ibloom1.jpg"
+      src="../../../assets/images/ibloom5-final 1-6b9d00af.png"
         width="100%"
         alt="logo"
       />
@@ -14,10 +14,10 @@
     <div
       class="text-[14px] uppercase font-medium leading-[16px] text-[#2E263DA3]"
     ></div>
-    <ul class="mt-2">
+    <ul class="mt-2 gap-3">
       <ng-container *ngFor="let item of sidebarData; let i = index">
         <li
-          class="sidelinks"
+          class="sidelinks px-4 py-2"
           [ngClass]="{
             activeSidebarActive: activeMenuItem === item.activeTitle
           }"
@@ -68,5 +68,3 @@
     </li>
   </div>
 </div>
-
-

@@ -13,16 +13,18 @@
   position: sticky;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 6px 16px 0px #2e263d38;
+  // box-shadow: 0px 6px 16px 0px #2e263d38;
+  border-right: 1px solid #E2E8F0;
 }
 a {
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 0.625rem;
   font-size: 16px;
-  color: #566a7f !important;
+  color: #4D4D4D !important;
   text-decoration: none;
+  font-family: Nunito,sans-serif !important;
 }
 ul {
   list-style-type: none;
@@ -35,17 +37,26 @@ ul {
 .activeSidebarActive {
   a {
     // color: #696cff !important;
-    color: #fff !important;
-    font-weight: 600 !important;
+    color: #23769E !important;
+    font-weight: 500 !important;
   }
   .icon {
-    font-weight: 600 !important;
+    font-weight: 500 !important;
   }
   // background: #696cff29;
-  background: linear-gradient(to right, #1ED7A5, #0E62AA);
-  font-weight: 500 !important;
-  border-radius: 5px;
+  // background: linear-gradient(to right, #1ED7A5, #0E62AA);
+  background-color: #1f9ac712;
+  font-weight: 600 !important;
+  // border-radius: 5px;
 }
+// .activeSidebarActive:hover{
+//   a {
+   
+//     color: #fff !important;
+//     font-weight: 500 !important;
+//   }
+//   background-color: #23769ee6 !important;
+// }
 li {
   font-size: 15px;
   line-height: 22px;
@@ -62,24 +73,29 @@ li {
   margin: 0 auto;
 }
 .sidebar_header {
-  padding: 30px 15px 20px 15px;
+  padding: 1.375rem 1.5rem  1.25rem 1.5rem;
 }
 
 .sidelinks {
-  color: #566a7f !important;
+  color: #566a7f;
   a {
     font-weight: 500;
   }
 
   cursor: pointer;
-  padding: 12px 14px;
-  border-radius: 5px;
+  // padding: 12px 14px;
+  // border-radius: 5px;
 }
 
 .sidebar_content {
-  padding: 20px 15px;
+  padding: 20px 0;
   .sidelinks:hover {
-    background-color: #566a7f0d;
+    a {
+      // color: #696cff !important;
+      color: #23769E !important;
+      font-weight: 500 !important;
+    }
+    background-color: #1f9ac712;
   }
 }
 .sidebar_footer {
@@ -100,7 +116,7 @@ li {
 .footer {
   gap: 10px !important;
   font-size: 15px;
-  color: #566a7f !important;
+  color: #4D4D4D !important;
   font-weight: 500;
   line-height: 22px;
 }
