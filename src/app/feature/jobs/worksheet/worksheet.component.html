@@ -17,7 +17,7 @@
           <p-dropdown
             [options]="gradeOptions"
             placeholder="Select grade"
-            [(ngModel)]="selectedGrade"
+            [(ngModel)]="selectedGrade" 
             (onChange)="onDropdownChange($event, 'grade')"
           ></p-dropdown>
         </div>
@@ -69,7 +69,7 @@
                   </ng-container>
                 </div>
               </div>
-              <div class="col-md-12 mb-4">
+              <!-- <div class="col-md-12 mb-4">
                 <div class="card-description bold_font">
                   <input class="" type="checkbox"> {{ data?.regenerated_options?.A }}
                 </div>
@@ -82,6 +82,17 @@
                 <div class="card-description bold_font">
                   <input class="" type="checkbox"> {{ data?.regenerated_options?.D }}
                 </div>
+              </div> -->
+              <div class="col-md-12 d-flex mb-4">
+                <div class="col-md-6">
+                  <div class="card-description bold_font mb-3"><input class="" type="checkbox"> {{ data?.regenerated_options?.A }}</div>
+                  <div class="card-description bold_font"><input class="" type="checkbox"> {{ data?.regenerated_options?.B }}</div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card-description bold_font mb-3"><input class="" type="checkbox"> {{ data?.regenerated_options?.C }}</div>
+                <div class="card-description bold_font"><input class="" type="checkbox"> {{ data?.regenerated_options?.D }}</div>
+                </div>
+  
               </div>
               <!-- Generated questions start from here -->
                
