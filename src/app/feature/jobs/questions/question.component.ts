@@ -9,9 +9,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./question.component.scss'],
 })
 export class QuestionComponent implements OnInit {
-  filteredJobs: any[] = [];
+  filtered_questions: any[] = [];
   searchQuery: string = '';
-  dummyJson: any[] = [];
+  all_questions: any[] = [];
   selectedTopic!: any;
   dropdownOptions: any = [];
   gradeOptions: any = [{ label: 'First', value: 'First' }];
@@ -36,14 +36,11 @@ export class QuestionComponent implements OnInit {
     private featuredService: FeatureService,
     private routes: ActivatedRoute,
     private toaster: ToastrService
-  ) {
-    console.log(this.filteredJobs, 'worksheet');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.get_topics();
     this.routes.paramMap.subscribe((params) => {
-      console.log(params);
       this.paramTopic = params.get('topic');
       this.paramGrade = params.get('grade');
       this.paramsubject = params.get('subject');
@@ -52,7 +49,7 @@ export class QuestionComponent implements OnInit {
   }
 
   initializeMessages(): void {
-    this.dummyJson.forEach((_, i) => {
+    this.all_questions.forEach((_, i) => {
       this.message[i] = [''];
       this.showtextbox[i] = [false];
     });
@@ -63,11 +60,6 @@ export class QuestionComponent implements OnInit {
       this.dropdownOptions = res.topics_list;
       this.initializeSelectedTopic();
     });
-  }
-
-  sendMessage() {
-    // Call API to send the message
-    console.log('Message sent');
   }
 
   initializeSelectedTopic(): void {
@@ -96,8 +88,8 @@ export class QuestionComponent implements OnInit {
       diffucilty: this.selectedDiffucilty,
     };
     this.featuredService.get_all_questions(obj).subscribe((res) => {
-      this.dummyJson = res.questions_list;
-      this.filteredJobs = res.questions_list;
+      this.all_questions = res.questions_list;
+      this.filtered_questions = res.questions_list;
       this.initializeMessages();
     });
   }
@@ -110,7 +102,10 @@ export class QuestionComponent implements OnInit {
   }
 
   hideTextArea(index: number, subIndex: number = 0) {
-    if (this.showtextbox[index] && this.showtextbox[index][subIndex] !== undefined) {
+    if (
+      this.showtextbox[index] &&
+      this.showtextbox[index][subIndex] !== undefined
+    ) {
       this.showtextbox[index][subIndex] = false;
     }
   }
@@ -134,7 +129,6 @@ export class QuestionComponent implements OnInit {
       }
     }
 
-    console.log(message);
     console.log(data, data?.question_id, data?.regenerated_id);
 
     let obj: any = {
@@ -148,8 +142,6 @@ export class QuestionComponent implements OnInit {
       datatype = 'requestion';
       obj.regenerated_id = data?.regenerated_id;
     }
-    console.log(obj);
-
     this.featuredService.generateVr(obj, datatype).subscribe((res) => {
       console.log('Response from generateVr:', res); // Log the response for debugging
 
@@ -191,13 +183,7 @@ export class QuestionComponent implements OnInit {
   }
 
   movetoworksheet(data: any, index: number): void {
-    console.log(data, data?.question_id, data?.regenerated_id);
-    // const obj = {
-    //   regenerated_id: data,
-    // };
-    let obj: any = {
-      
-    };
+    let obj: any = {};
     let datatype: string = '';
     if (data.question_id) {
       datatype = 'question';
@@ -207,11 +193,7 @@ export class QuestionComponent implements OnInit {
 
       obj.question_id = data.regenerated_id;
     }
-    console.log(obj);
-    console.log(data);
-
     this.featuredService.movetoworksheet(obj, datatype).subscribe((res) => {
-      console.log(res);
       if (res.message === 'Status updated to approved successfully!') {
         this.toaster.success('Question successfully moved to worksheet');
         this.isMovedToWorksheet[index] = true;
@@ -220,8 +202,7 @@ export class QuestionComponent implements OnInit {
   }
 
   delete(data: any, mainIndex: number, subIndex?: number): void {
-    console.log(data)
-    let obj :any={}
+    let obj: any = {};
     let datatype: string = '';
     if (data.question_id) {
       datatype = 'question';
@@ -231,20 +212,20 @@ export class QuestionComponent implements OnInit {
 
       obj.question_id = data.regenerated_id;
     }
-    this.featuredService.delete_questions(obj,datatype).subscribe((res)=>{
+    this.featuredService.delete_questions(obj, datatype).subscribe((res) => {
       console.log(res);
       this.toaster.success(res.message);
 
       // Remove the deleted question from the local array
       if (subIndex !== undefined) {
-        this.filteredJobs[mainIndex].generatedVr.splice(subIndex, 1);
-        if (this.filteredJobs[mainIndex].generatedVr.length === 0) {
-          delete this.filteredJobs[mainIndex].generatedVr;
+        this.filtered_questions[mainIndex].generatedVr.splice(subIndex, 1);
+        if (this.filtered_questions[mainIndex].generatedVr.length === 0) {
+          delete this.filtered_questions[mainIndex].generatedVr;
         }
       } else {
-        this.filteredJobs.splice(mainIndex, 1);
+        this.filtered_questions.splice(mainIndex, 1);
       }
-    })
+    });
   }
 
   onDropdownChange(event: any, params: string): void {
@@ -281,7 +262,7 @@ export class QuestionComponent implements OnInit {
 
   filterJobs(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-    this.filteredJobs = this.dummyJson.filter((job) =>
+    this.filtered_questions = this.all_questions.filter((job) =>
       job['question'].toLowerCase().includes(searchTerm)
     );
   }
@@ -320,5 +301,5 @@ export class QuestionComponent implements OnInit {
         stars = 0;
     }
     return new Array(stars);
-  };
+  }
 }

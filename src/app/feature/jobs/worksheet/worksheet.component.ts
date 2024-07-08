@@ -26,7 +26,7 @@ export class WorksheetComponent {
   selectedJob_id!: string;
   job_id!: string;
   interview_id: string = "";
-  filteredJobs: any[] = [];
+  filtered_questions: any[] = [];
   searchQuery: string = "";
   currentPage: number = 1;
   itemsPerPage: number = 10;
@@ -67,7 +67,7 @@ export class WorksheetComponent {
       name: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
     });
-    console.log(this.filteredJobs, "worksheet");
+    console.log(this.filtered_questions, "worksheet");
   }
   ngOnInit(): void {
     this.get_topics();
@@ -97,7 +97,7 @@ get_questions(){
   this.featuredService.approvedquestion(obj).subscribe((res)=>{
     console.log(res)
     this.dummyJson = res.approved_questions;
-    this.filteredJobs=res.approved_questions
+    this.filtered_questions=res.approved_questions
   })
 }
   initializeSelectedTopic(): void {
@@ -127,7 +127,7 @@ get_questions(){
     };
     this.featuredService.get_all_questions(obj).subscribe((res) => {
       this.dummyJson = res.questions_list;
-      this.filteredJobs = res.questions_list;
+      this.filtered_questions = res.questions_list;
     });
   }
 
@@ -240,7 +240,7 @@ get_questions(){
 
   filterJobs(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-    this.filteredJobs = this.dummyJson.filter((job) =>
+    this.filtered_questions = this.dummyJson.filter((job) =>
       job['regenerated_question_text'].toLowerCase().includes(searchTerm)
     );
   };
@@ -281,11 +281,11 @@ get_questions(){
 
   get paginatedJobs() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredJobs.slice(start, start + this.itemsPerPage);
+    return this.filtered_questions.slice(start, start + this.itemsPerPage);
   }
 
   get totalPages() {
-    return Math.ceil(this.filteredJobs.length / this.itemsPerPage);
+    return Math.ceil(this.filtered_questions.length / this.itemsPerPage);
   }
 
   setPage(page: number) {

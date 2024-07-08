@@ -1,36 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { FeatureService } from "../../feature.service";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { SharedService } from "src/app/shared/shared.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
-export interface Job {
-  job_id: string;
-  title: string;
-  skills: string;
-  description: string;
-}
+import { Component, OnInit } from '@angular/core';
+import { FeatureService } from '../../feature.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
-  selector: "app-topic",
-  templateUrl: "./topic.component.html",
-  styleUrls: ["./topic.component.scss"],
+  selector: 'app-topic',
+  templateUrl: './topic.component.html',
+  styleUrls: ['./topic.component.scss'],
 })
 export class TopicComponent implements OnInit {
   visible: boolean = false;
-  form: FormGroup;
   allJobs: any[] = [];
-  filteredJobs: any[] = [];
-  isSidebarVisible = false;
-  flag = false;
-  modalMode: "add" | "edit" | null = null;
+  filtered_topics: any[] = [];
+  modalMode: 'add' | 'edit' | null = null;
   modalData: any = null;
   isModalVisible = false;
   isDetailModalVisible = false;
-  selectedJob_id!: string;
-  job_id: any;
-  interview_id: any = "";
-  user_name: string = "User";
-  parsedLessons: any;
   gradeOptions: any = [{ label: 'First', value: 'First' }];
   subjectOptions: any = [{ label: 'Maths', value: 'Maths' }];
   dropdownOptions: any = [];
@@ -39,40 +23,44 @@ export class TopicComponent implements OnInit {
   selectedTopic: any;
   constructor(
     private featuredService: FeatureService,
-    private fb: FormBuilder,
-    private sharedService: SharedService,
     private router: Router,
-    private activateRouter: ActivatedRoute,
-    private toaster: ToastrService
-  ) {
-    this.form = this.fb.group({
-      name: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-    });
-  }
-
+  ) {};
   ngOnInit() {
-    this.getAllJobs();
+    this.getAllTopics();
     this.get_topics();
     this.items = [
-      { label:'Generated Questions',icon: 'pi pi-refresh', title: ' Generated Questions', command: (event:any) => this.showDialog('edit',this.cardData) },
-      { label:'Questions',icon: 'pi pi-question-circle', title: 'Questions', command: () => this.showQuestions(this.cardData) },
-      {label:'WorkSheet', icon: 'pi pi-file', title: 'WorkSheet', command: () => this.showWorkSheet(this.cardData)},
-        {label:'Delete', icon: 'pi pi-trash', title: 'Delete',  severity:"danger", command: () => this.deleteItem() }
-       
-    ]
-  
-   
-    // this.featuredService.getallQuestions().subscribe((res)=>{
-    //   console.log(res)
-    // })
+      {
+        label: 'Generated Questions',
+        icon: 'pi pi-refresh',
+        title: ' Generated Questions',
+        command: (event: any) => this.showDialog('edit', this.cardData),
+      },
+      {
+        label: 'Questions',
+        icon: 'pi pi-question-circle',
+        title: 'Questions',
+        command: () => this.showQuestions(this.cardData),
+      },
+      {
+        label: 'WorkSheet',
+        icon: 'pi pi-file',
+        title: 'WorkSheet',
+        command: () => this.showWorkSheet(this.cardData),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        title: 'Delete',
+        severity: 'danger',
+        command: () => this.deleteItem(),
+      },
+    ];
   }
   get_topics(): void {
     this.featuredService.get_topics().subscribe((res) => {
       this.dropdownOptions = res.topics_list;
-      // this.initializeSelectedTopic();
     });
-  };
+  }
   onDropdownChange(event: any, params: string): void {
     // const selectedValue = event.value;
     // switch (params) {
@@ -92,36 +80,27 @@ export class TopicComponent implements OnInit {
     //     break;
     // }
     // this.get_all_questions();
-  }
-  editItem(event:any) {
-    // Your edit item logic here
-    console.log('item',event)
-    this.router.navigate([''])
-  }
-  gettingdata(data:any){
-    this.cardData= data
-    console.log(data)
+  };
+  gettingdata(data: any) {
+    this.cardData = data;
   }
 
   deleteItem() {
     // Your delete item logic here
-  }
-
-  shareItem() {
-    // Your share item logic here
-  }
+  };
   showQuestions(data: any) {
-    console.log(data);
     if (data) {
       this.router.navigate([
-        "/dashboard/questions",
-        { topic: data?.topic, grade: data?.grade , subject:data?.subject },
+        '/dashboard/questions',
+        { topic: data?.topic, grade: data?.grade, subject: data?.subject },
       ]);
     }
-    console.log(data);
-  }
+  };
   showWorkSheet(data: any) {
-    this.router.navigate(["/dashboard/worksheet", {topic: data?.topic, grade: data?.grade , subject:data?.subject }]);
+    this.router.navigate([
+      '/dashboard/worksheet',
+      { topic: data?.topic, grade: data?.grade, subject: data?.subject },
+    ]);
   }
   // toggleViewMore(data: any, section: string) {
   //   if (section === "introduction") {
@@ -130,34 +109,14 @@ export class TopicComponent implements OnInit {
   //     data.showFullSummary = !data.showFullSummary;
   //   }
   // }
-  
-  showInterviewModal(job_id: string) {
-    // const currentParams = { ...this.activateRouter.snapshot.queryParams };
-    // currentParams['aimodels'] ="openai"
-    // this.router.navigate([], {
-    //   relativeTo: this.activateRouter,
-    //   queryParams: currentParams,
-    //   queryParamsHandling: 'merge',
-    // });
-    this.selectedJob_id = job_id;
-    console.log(job_id);
-    this.visible = true;
-    this.form.reset(); // Reset the form when showing the modal
-  }
 
- 
-
-  closeModal() {
-    this.visible = false;
-  }
-
-  showDialog(mode: "add" | "edit", data?: any) {
+  showDialog(mode: 'add' | 'edit', data?: any) {
     console.log(data);
     this.modalMode = mode;
     this.modalData = data || null;
     this.isModalVisible = true;
   }
-  openContentModal(mode: "add" | "edit", data?: any){
+  openContentModal(mode: 'add' | 'edit', data?: any) {
     console.log(data);
     this.modalMode = mode;
     this.modalData = data || null;
@@ -167,47 +126,22 @@ export class TopicComponent implements OnInit {
   handleModalClose() {
     this.isModalVisible = false;
     this.isDetailModalVisible = false;
-    this.getAllJobs();
+    this.getAllTopics();
   }
 
-  getAllJobs() {
-    this.featuredService.getAllCards("get_all_cards").subscribe({
+  getAllTopics() {
+    this.featuredService.getAllCards('get_all_cards').subscribe({
       next: (res: any) => {
-        // console.log(res)
         let lesson = res.all_card_results;
-        console.log(lesson);
-        // this.parsedLessons = lesson.map((card:any) => ({
-        //   ...card,
-        //   lesson: JSON.parse(card.lesson)
-        // }));
-        // console.log(this.parsedLessons);
-
-        // let array_index = Object.keys(this.parsedLessons);
-        // console.log(array_index)
-        //  for(let i =0 ; i<=array_index.length;i++){
-        //   console.log(Object.keys(this.parsedLessons[i]))
-
-        //  }
-
         this.allJobs = lesson as any[];
-        this.filteredJobs = lesson as any[]; // Initialize filteredJobs with all jobs
-        console.log(this.allJobs);
+        this.filtered_topics = lesson as any[]; // Initialize filtered_topics with all jobs
       },
     });
-  }
-
+  };
   filterJobs(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-    this.filteredJobs = this.allJobs.filter((job) =>
+    this.filtered_topics = this.allJobs.filter((job) =>
       job.topic.toLowerCase().includes(searchTerm)
     );
-  }
-
-  startMeeting() {
-    this.isSidebarVisible = !this.isSidebarVisible;
-  }
-
-  handleSidebarHide() {
-    this.isSidebarVisible = false;
   }
 }
