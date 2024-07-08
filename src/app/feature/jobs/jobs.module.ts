@@ -35,7 +35,6 @@ import { DetailsModalComponent } from './details-modal/details-modal.component';
     SidebarModule,
     SharedModule,
     FileUploadModule,
-    // MatDialogModule
     AccordionModule,
     MenuModule,
     TooltipModule,
@@ -44,7 +43,7 @@ import { DetailsModalComponent } from './details-modal/details-modal.component';
     OverlayPanelModule,
     ButtonModule,
     InputTextareaModule,
-       MenuModule,
+    MenuModule,
     TooltipModule
   ]
 })

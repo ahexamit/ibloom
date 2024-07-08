@@ -70,12 +70,6 @@ export class InterviewComponent implements OnInit {
     console.log('Message sent');
   }
 
-  // saveMessage() {
-  //   // Call API to save the message
-  //   console.log('Message saved:', this.message);
-  //   op.hide();
-  // }
-
   initializeSelectedTopic(): void {
     if (this.paramTopic && this.paramGrade && this.paramsubject) {
       this.selectedTopic = this.paramTopic;
@@ -216,7 +210,7 @@ export class InterviewComponent implements OnInit {
     console.log(obj);
     console.log(data);
 
-    this.featuredService.movetoworksheet(obj,datatype).subscribe((res) => {
+    this.featuredService.movetoworksheet(obj, datatype).subscribe((res) => {
       console.log(res);
       if (res.message === 'Status updated to approved successfully!') {
         this.toaster.success('Question successfully moved to worksheet');
@@ -225,9 +219,7 @@ export class InterviewComponent implements OnInit {
     });
   }
 
-
-
-  delete(data: any) {
+  delete(data: any, mainIndex: number, subIndex?: number): void {
     console.log(data)
     let obj :any={}
     let datatype: string = '';
@@ -242,6 +234,16 @@ export class InterviewComponent implements OnInit {
     this.featuredService.delete_questions(obj,datatype).subscribe((res)=>{
       console.log(res);
       this.toaster.success(res.message);
+
+      // Remove the deleted question from the local array
+      if (subIndex !== undefined) {
+        this.filteredJobs[mainIndex].generatedVr.splice(subIndex, 1);
+        if (this.filteredJobs[mainIndex].generatedVr.length === 0) {
+          delete this.filteredJobs[mainIndex].generatedVr;
+        }
+      } else {
+        this.filteredJobs.splice(mainIndex, 1);
+      }
     })
   }
 
@@ -318,5 +320,5 @@ export class InterviewComponent implements OnInit {
         stars = 0;
     }
     return new Array(stars);
-  }
+  };
 }
