@@ -11,11 +11,11 @@ export interface Job {
   description: string;
 }
 @Component({
-  selector: "app-jobs",
-  templateUrl: "./jobs.component.html",
-  styleUrls: ["./jobs.component.scss"],
+  selector: "app-topic",
+  templateUrl: "./topic.component.html",
+  styleUrls: ["./topic.component.scss"],
 })
-export class JobsComponent implements OnInit {
+export class TopicComponent implements OnInit {
   visible: boolean = false;
   form: FormGroup;
   allJobs: any[] = [];
@@ -145,44 +145,7 @@ export class JobsComponent implements OnInit {
     this.form.reset(); // Reset the form when showing the modal
   }
 
-  onSubmit() {
-    this.user_name = this.form.get("name")?.value;
-    const obj = {
-      name: this.form.get("name")?.value,
-      email: this.form.get("email")?.value,
-      job_id: this.selectedJob_id,
-    };
-    this.featuredService
-      .scheduledMetting(obj, "create_interview_session")
-      .subscribe({
-        next: (res: any) => {
-          console.log(res);
-          this.job_id = res.session_details.job_id;
-          this.interview_id = res.session_details.interview_id;
-          console.log(this.job_id, this.interview_id);
-
-          if (
-            res.message === "users created successfully" ||
-            res.interview_id
-          ) {
-            this.flag = true;
-            console.log("openchatbot");
-            this.closeModal();
-            this.startMeeting();
-            console.log("openchatbot but not opening");
-          }
-        },
-        error: (err: any) => {
-          console.error("Error:", err);
-          this.sharedService.errorMessage(
-            "Failed to start interview. Please try again."
-          );
-        },
-        complete: () => {
-          console.log("Request completed");
-        },
-      });
-  }
+ 
 
   closeModal() {
     this.visible = false;

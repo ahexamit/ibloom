@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FeatureService } from "../../feature.service";
-import { interview } from "src/app/model/profile";
 import * as moment from "moment-timezone";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -18,7 +17,7 @@ export class WorksheetComponent {
   visible: boolean = false;
   isInterviewContext: boolean = false;
   form: FormGroup;
-  allJobs: interview[] = [];
+  allJobs: any[] = [];
   isSidebarVisible = false;
   flag = false;
   modalMode: "add" | "edit" | null = null;
@@ -227,17 +226,17 @@ get_questions(){
     this.visible = false;
   }
 
-  private getAllInterviews(): void {
-    this.featuredService.getAllInterviews("get_interviews").subscribe({
-      next: (res: any) => {
-        this.allJobs = res.session_interviews;
-        this.job_id = res.session_interviews.job_id;
-        this.interview_id = res.session_interviews.session_id;
-        // this.filterJobs();
-        console.log(this.allJobs);
-      },
-    });
-  }
+  // private getAllInterviews(): void {
+  //   this.featuredService.getAllInterviews("get_interviews").subscribe({
+  //     next: (res: any) => {
+  //       this.allJobs = res.session_interviews;
+  //       this.job_id = res.session_interviews.job_id;
+  //       this.interview_id = res.session_interviews.session_id;
+  //       // this.filterJobs();
+  //       console.log(this.allJobs);
+  //     },
+  //   });
+  // }
 
   filterJobs(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();

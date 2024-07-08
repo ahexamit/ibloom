@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { JobsRoutingModule } from './jobs-routing.module';
-import { JobsComponent } from './jobs/jobs.component';
+import { TopicComponent } from './topics/topic.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AddeditmodalComponent } from './addeditmodal/addeditmodal.component';
-import { InterviewComponent } from './interview/interview.component';
+import { QuestionComponent } from './questions/question.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { AccordionModule } from 'primeng/accordion';
 import { WorksheetComponent } from './worksheet/worksheet.component';
@@ -22,9 +22,9 @@ import { DetailsModalComponent } from './details-modal/details-modal.component';
 
 @NgModule({
   declarations: [
-    JobsComponent,
+    TopicComponent,
     AddeditmodalComponent,
-    InterviewComponent,
+    QuestionComponent,
     WorksheetComponent,
     DetailsModalComponent,
 

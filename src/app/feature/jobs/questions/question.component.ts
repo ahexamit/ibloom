@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-interview',
-  templateUrl: './interview.component.html',
-  styleUrls: ['./interview.component.scss'],
+  selector: 'app-question',
+  templateUrl: './question.component.html',
+  styleUrls: ['./question.component.scss'],
 })
-export class InterviewComponent implements OnInit {
+export class QuestionComponent implements OnInit {
   filteredJobs: any[] = [];
   searchQuery: string = '';
   dummyJson: any[] = [];

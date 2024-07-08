@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { InterviewComponent } from './jobs/interview/interview.component';
+import { QuestionComponent } from './jobs/questions/question.component';
 import { WorksheetComponent } from './jobs/worksheet/worksheet.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'topics', pathMatch: 'full' },
   { path: 'topics', loadChildren: () => import('./jobs/jobs.module').then(m => m.JobsModule) },
-  { path: 'questions', component: InterviewComponent },
+  { path: 'questions', component: QuestionComponent },
   { path: 'worksheet', component: WorksheetComponent },
  
 

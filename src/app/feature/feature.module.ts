@@ -7,12 +7,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { EditorModule } from 'primeng/editor';
 import { AccordionModule } from 'primeng/accordion';
-// import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
-  declarations: [
-
-  
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     FeatureRoutingModule,
@@ -21,8 +17,7 @@ import { AccordionModule } from 'primeng/accordion';
     ConfirmDialogModule,
     ToastModule,
     EditorModule,
-    AccordionModule
-    // MatDialogModule
+    AccordionModule,
   ],
 })
-export class FeatureModule { }
+export class FeatureModule {}

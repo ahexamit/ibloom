@@ -21,7 +21,6 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { QuillModule } from 'ngx-quill';
 import { BreadcumComponent } from "./shared/breadcum/breadcum.component"
 import { SidebarModule } from 'primeng/sidebar';
-import { LoginComponent } from './auth/login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,8 +29,6 @@ import { LoginComponent } from './auth/login/login.component';
     FullComponent,
     SidebarComponent,
     BreadcumComponent,
-    LoginComponent
-    // NotAllowspaceDirective,
   ],
   imports: [
     SharedModule,
