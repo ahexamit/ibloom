@@ -11,7 +11,7 @@
       />
     </div>
     <div class="d-flex gap-2">
-      <div class="p-field">
+      <div class="p-field dropdown_box">
         <p-dropdown
           [options]="gradeOptions"
           placeholder="Select grade"
@@ -65,11 +65,22 @@
                 </ng-container>
               </div>
             </div>
-            <div class="col-md-12 mb-2">
+            <!-- <div class="col-md-12 mb-2">
               <div class="card-description bold_font">A: {{ data?.options?.A }}</div>
               <div class="card-description bold_font">B: {{ data?.options?.B }}</div>
               <div class="card-description bold_font">C: {{ data?.options?.C }}</div>
               <div class="card-description bold_font">D: {{ data?.options?.D }}</div>
+            </div> -->
+            <div class="col-md-12 d-flex mb-4">
+              <div class="col-md-6">
+                <div class="card-description bold_font mb-3">A: {{ data?.options?.A }}</div>
+                <div class="card-description bold_font">B: {{ data?.options?.B }}</div>
+              </div>
+              <div class="col-md-6">
+                <div class="card-description bold_font mb-3">C: {{ data?.options?.C }}</div>
+              <div class="card-description bold_font">D: {{ data?.options?.D }}</div>
+              </div>
+
             </div>
             <div *ngIf="showtextbox[i][0]" class="col-lg-8 mb-2">
               <div class="d-flex gap-2 w-100">
@@ -88,13 +99,13 @@
             <div class="col-md-12">
               <div class="d-flex gap-4">
                 <div>
-                  <a  style="color:#23769E;" class="interview_button" (click)="showtextarea(i)">Generate VR</a>
+                  <a  style="color:#23769E;" class="interview_button" (click)="showtextarea('Generate',i)">Generate VR</a>
                 </div>
                 <div>
-                  <a  style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, i, data, null)">Regenerate Question</a>
+                  <a  style="color:#23769E;" class="interview_button" (click)="showtextarea('Regenerate',i)">Regenerate Question</a>
                 </div>
                 <div>
-                  <a style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, i, data, null)">Generate Similar Question</a>
+                  <a style="color:#23769E;" class="interview_button" (click)="showtextarea('Similar',i)">Generate Similar Question</a>
                 </div>
                 <div>
                   <a style="color:#23769E;" class="interview_button" (click)="movetoworksheet(data, i)">Move To WorkSheet</a>
@@ -109,14 +120,25 @@
                 <hr />
                 <div class="col-md-12 mb-4">
                   <div class="card-text">
-                    <b style="font-size: 18px">Q{{ i + 1 }}.{{ j + 1 }} {{ item?.generated_vr?.question }}</b>
+                    <b style="font-size: 18px">Q{{ i + 1 }}.{{ j + 1 }} {{ item?.generated_vr?.question || item?.similar_question?.question }}</b>
                   </div>
                 </div>
-                <div class="col-md-12 mb-4">
-                  <div class="card-description bold_font">A: {{ item?.generated_vr?.options?.A }}</div>
-                  <div class="card-description bold_font">B: {{ item?.generated_vr?.options?.B }}</div>
-                  <div class="card-description bold_font">C: {{ item?.generated_vr?.options?.C }}</div>
-                  <div class="card-description bold_font">D: {{ item?.generated_vr?.options?.D }}</div>
+                <!-- <div class="col-md-12 mb-4">
+                  <div class="card-description bold_font">A: {{ item?.generated_vr?.options?.A || item?.similar_question?.options?.A}}</div>
+                  <div class="card-description bold_font">B: {{ item?.generated_vr?.options?.B  || item?.similar_question?.options?.B}}</div>
+                  <div class="card-description bold_font">C: {{ item?.generated_vr?.options?.C || item?.similar_question?.options?.C }}</div>
+                  <div class="card-description bold_font">D: {{ item?.generated_vr?.options?.D || item?.similar_question?.options?.D }}</div>
+                </div> -->
+                <div class="col-md-12 mb-4 d-flex">
+                  <div class="col-md-6">
+                    <div class="card-description bold_font mb-3">A: {{ item?.generated_vr?.options?.A || item?.similar_question?.options?.A}}</div>
+                    <div class="card-description bold_font">B: {{ item?.generated_vr?.options?.B  || item?.similar_question?.options?.B}}</div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card-description bold_font mb-3">C: {{ item?.generated_vr?.options?.C || item?.similar_question?.options?.C }}</div>
+                  <div class="card-description bold_font">D: {{ item?.generated_vr?.options?.D || item?.similar_question?.options?.D }}</div>
+                  </div> 
+
                 </div>
                 <div *ngIf="showtextbox[i][j + 1]" class="col-lg-8 mb-2">
                   <div class="d-flex gap-2 w-100">
@@ -135,13 +157,13 @@
                 <div class="col-md-12">
                   <div class="d-flex gap-4">
                     <div>
-                      <a style="color:#23769E;" class="interview_button " (click)="showtextarea(i, j + 1)">Generate VR</a>
+                      <a style="color:#23769E;" class="interview_button " (click)="showtextarea('Generate',i, j + 1)">Generate VR</a>
                     </div>
                     <div>
-                      <a style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, j, item, null, i)">Regenerate Question</a>
+                      <a style="color:#23769E;" class="interview_button" (click)="showtextarea('Regenerate',i, j + 1)">Regenerate Question</a>
                     </div>
                     <div>
-                      <a style="color:#23769E;" class="interview_button" (click)="generateQuestions($event, j, item, null, i)">Generate Similar Question</a>
+                      <a style="color:#23769E;" class="interview_button" (click)="showtextarea('Similar',i, j + 1)">Generate Similar Question</a>
                     </div>
                     <div>
                       <a style="color:#23769E;" class="interview_button" (click)="movetoworksheet(item, i)">Move To WorkSheet</a>

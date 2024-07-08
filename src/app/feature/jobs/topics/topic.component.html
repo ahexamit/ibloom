@@ -13,28 +13,32 @@
       />
     </div>
     <div class="d-flex gap-2">
-      <div class="p-field">
+      <div class="p-field dropdown_box">
         <p-dropdown
           [options]="gradeOptions"
           placeholder="Select grade"
           (onChange)="onDropdownChange($event, 'grade')"
+          [(ngModel)]="selectedGrade"
         ></p-dropdown>
       </div>
-      <div class="p-field">
+      <div class="p-field dropdown_box">
         <p-dropdown
           [options]="subjectOptions"
           placeholder="Select Subject"
           (onChange)="onDropdownChange($event, 'subject')"
+          [(ngModel)]="selectedSubject"
         ></p-dropdown>
       </div>
 
-      <div class="p-field">
+      <!-- <div class="p-field">
         <p-dropdown
           [options]="dropdownOptions"
           placeholder="Select Topic"
           (onChange)="onDropdownChange($event, 'topic')"
+          [(ngModel)]="selectedTopic"
+
         ></p-dropdown>
-      </div>
+      </div> -->
       <button class="btn" (click)="showDialog('add')">GENERATE CONTENT</button>
     </div>
   </div>

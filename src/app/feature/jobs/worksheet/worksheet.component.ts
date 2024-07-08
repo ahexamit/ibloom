@@ -339,7 +339,6 @@ get_questions(){
     this.flag = true;
     console.log(this.interview_id);
 
-    this.urlParamChanged();
 
     this.isSidebarVisible = !this.isSidebarVisible;
     this.isInterviewContext = !this.isInterviewContext;
@@ -348,44 +347,12 @@ get_questions(){
     this.highlightedSessionId = interview_id; // Highlight the session row
   }
 
-  urlParamChanged(): void {
-    const currentParams = { ...this.routes.snapshot.queryParams };
-    currentParams["session_id"] = this.interview_id;
-    this.router.navigate([], {
-      relativeTo: this.routes,
-      queryParams: currentParams,
-      queryParamsHandling: "merge",
-    });
-    currentParams["username"] = this.user_name;
-    this.router.navigate([], {
-      relativeTo: this.routes,
-      queryParams: currentParams,
-      queryParamsHandling: "merge",
-    });
-  }
+ 
 
   handleSidebarHide() {
     this.isModalOpen = false;
     // this.isSidebarVisible = false;
     this.isInterviewContext = false;
-  }
-
-  convertToIST(dateString: string): string {
-    return moment
-      .tz(dateString, "GMT")
-      .tz("Asia/Kolkata")
-      .format("YYYY-MM-DD hh:mm:ss A");
-  }
-
-  showDialog(mode: "add" | "edit", data?: any) {
-    console.log(data);
-    this.modalMode = mode;
-    this.modalData = data || null;
-    this.isModalVisible = true;
-  }
-  handleModalClose() {
-    this.isModalVisible = false;
-    // this.getAllJobs();
-  }
+  };
 
 }

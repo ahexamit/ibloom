@@ -21,12 +21,15 @@ export class TopicComponent implements OnInit {
   items!: any[];
   cardData: any;
   selectedTopic: any;
+  selectedGrade: any;
+  selectedDiffucilty: any;
+  selectedSubject: any;
   constructor(
     private featuredService: FeatureService,
     private router: Router,
   ) {};
   ngOnInit() {
-    this.getAllTopics();
+    // this.getAllTopics();
     this.get_topics();
     this.items = [
       {
@@ -59,27 +62,26 @@ export class TopicComponent implements OnInit {
   get_topics(): void {
     this.featuredService.get_topics().subscribe((res) => {
       this.dropdownOptions = res.topics_list;
+      this.initializeSelectedTopic();
+
     });
   }
   onDropdownChange(event: any, params: string): void {
-    // const selectedValue = event.value;
-    // switch (params) {
-    //   case 'topic':
-    //     this.selectedTopic = selectedValue;
-    //     break;
-    //   case 'grade':
-    //     this.selectedGrade = selectedValue;
-    //     break;
-    //   case 'subject':
-    //     this.selectedSubject = selectedValue;
-    //     break;
-    //   case 'difficulty':
-    //     this.selectedDiffucilty = selectedValue;
-    //     break;
-    //   default:
-    //     break;
-    // }
-    // this.get_all_questions();
+    const selectedValue = event.value;
+    switch (params) {
+      case 'topic':
+        this.selectedTopic = selectedValue;
+        break;
+      case 'grade':
+        this.selectedGrade = selectedValue;
+        break;
+      case 'subject':
+        this.selectedSubject = selectedValue;
+        break;
+      default:
+        break;
+    }
+    this.getAllTopics();
   };
   gettingdata(data: any) {
     this.cardData = data;
@@ -130,7 +132,11 @@ export class TopicComponent implements OnInit {
   }
 
   getAllTopics() {
-    this.featuredService.getAllCards('get_all_cards').subscribe({
+    const obj = {
+      grade: this.selectedGrade,
+      subject: this.selectedSubject,
+    };
+    this.featuredService.getAllCards('get_all_cards',obj).subscribe({
       next: (res: any) => {
         let lesson = res.all_card_results;
         this.allJobs = lesson as any[];
@@ -144,4 +150,23 @@ export class TopicComponent implements OnInit {
       job.topic.toLowerCase().includes(searchTerm)
     );
   }
+  initializeSelectedTopic(): void {
+    if (this.dropdownOptions.length > 0) {
+      // this.selectedTopic = this.dropdownOptions[0].value;
+      this.selectedGrade = this.gradeOptions[0].value;
+      this.selectedSubject = this.subjectOptions[0].value;
+    }
+    this.setSelectedTopic();
+    this.getAllTopics();
+  };
+  setSelectedTopic(): void {
+    if (this.selectedTopic) {
+      const selectedOption = this.dropdownOptions.find(
+        (option: any) => option.value === this.selectedTopic
+      );
+      if (selectedOption) {
+        this.selectedTopic = selectedOption.value;
+      }
+    }
+  };
 }

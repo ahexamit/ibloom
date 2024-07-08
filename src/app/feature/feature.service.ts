@@ -8,10 +8,13 @@ import { SharedService } from '../shared/shared.service';
 export class FeatureService {
   constructor(private sharedservice: SharedService, private http: HttpClient) {}
   /**get all cards */
-  public getAllCards(endpoints: string): Observable<any> {
+  public getAllCards(endpoints: string,body:any): Observable<any> {
     const endPoint = endpoints;
     const url = `${this.sharedservice.base_url}${endPoint}`;
-    return this.http.get<any>(url).pipe(
+    const params = new HttpParams()
+      .set('grade', body?.grade)
+      .set('subject', body?.subject)
+    return this.http.get(url, { params }).pipe(
       map((data) => {
         return data;
       })
@@ -107,8 +110,9 @@ export class FeatureService {
     );
   }
   /**Add new generate VR Data */
-  public generateVr(data: any, datatype: string): Observable<any> {
-    const endPoint = 'visualizing_question';
+  public generateVr(data: any, datatype: string , api_endpoint:string): Observable<any> {
+    // const endPoint = 'visualizing_question';
+    const endPoint = api_endpoint;
     const url = `${this.sharedservice.base_url}${endPoint}`;
     const body = new FormData();
     if (datatype === 'question') {

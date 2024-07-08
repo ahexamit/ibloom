@@ -31,6 +31,7 @@ export class QuestionComponent implements OnInit {
   isMovedToWorksheet: boolean[] = [];
   showtextbox: boolean[][] = [];
   message: string[][] = [];
+  generate_mode!: string;
 
   constructor(
     private featuredService: FeatureService,
@@ -94,7 +95,9 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  showtextarea(index: number, subIndex: number = 0) {
+  showtextarea(api:string ,index: number, subIndex: number = 0) {
+    console.log(api)
+    this.generate_mode = api;
     if (!this.showtextbox[index]) {
       this.showtextbox[index] = [];
     }
@@ -142,10 +145,20 @@ export class QuestionComponent implements OnInit {
       datatype = 'requestion';
       obj.regenerated_id = data?.regenerated_id;
     }
-    this.featuredService.generateVr(obj, datatype).subscribe((res) => {
+    let api_endpoint = '';
+    if(this.generate_mode === 'Generate'){
+      api_endpoint = 'visualizing_question'
+    } else if(this.generate_mode === 'Regenerate'){
+     api_endpoint = 'regenerate_question'
+    }else{
+      api_endpoint = 'similar_question'
+
+    }
+    this.featuredService.generateVr(obj, datatype,api_endpoint).subscribe((res) => {
       console.log('Response from generateVr:', res); // Log the response for debugging
 
       if (typeof res === 'object' && res !== null) {
+        this.toaster.success(res.message)
         if (parentIndex === -1) {
           this.showtextbox[index] = [];
           this.message[index] = [''];
