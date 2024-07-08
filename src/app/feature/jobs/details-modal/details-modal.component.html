@@ -5,5 +5,56 @@
   (onHide)="closeModal()"
   [dismissableMask]="true"
 >
- {{deatilsShow}}
+<div *ngIf="visible" class="">
+  <div class="">
+    <!-- <span class="close" (click)="closeModal()">&times;</span> -->
+    
+    <div *ngIf="detailsToShow">
+      <h2>{{ formatKey('Introduction') }}</h2>
+      <p>{{ detailsToShow?.Introduction }}</p>
+      
+      <h2>{{ formatKey('Detailed_Explanation') }}</h2>
+      <div *ngIf="detailsToShow?.Detailed_Explanation">
+        <div *ngFor="let key of objectKeys(detailsToShow?.Detailed_Explanation)">
+          <h3>{{ formatKey(key) }}</h3>
+          <p>{{ detailsToShow.Detailed_Explanation[key] }}</p>
+        </div>
+      </div>
+
+      <h2>{{ formatKey('Examples') }}</h2>
+      <div *ngIf="detailsToShow?.Examples">
+        <ng-container *ngIf="isArray(detailsToShow?.Examples); else examplesObject">
+          <div *ngFor="let example of detailsToShow?.Examples">
+            <h3>{{ example.Scenario }}</h3>
+            <p>{{ example.Description }}</p>
+          </div>
+        </ng-container>
+        <ng-template #examplesObject>
+          <div *ngFor="let key of objectKeys(detailsToShow?.Examples)">
+            <h3>{{ formatKey(key) }}</h3>
+            <p>{{ detailsToShow.Examples[key] }}</p>
+          </div>
+        </ng-template>
+      </div>
+      
+      <h2>{{ formatKey('Key_Concepts') }}</h2>
+      <div *ngIf="detailsToShow?.Key_Concepts">
+        <div *ngFor="let key of objectKeys(detailsToShow?.Key_Concepts)">
+          <h3>{{ formatKey(key) }}</h3>
+          <p>{{ detailsToShow.Key_Concepts[key] }}</p>
+        </div>
+      </div>
+
+      <h2>{{ formatKey('Summary') }}</h2>
+      <p>{{ detailsToShow?.Summary }}</p>
+
+      <h2>{{ formatKey('Theory_and_Background') }}</h2>
+      <p>{{ detailsToShow?.Theory_and_Background }}</p>
+    </div>
+  </div>
+</div>
+
+
+
+
 </p-dialog>

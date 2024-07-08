@@ -196,6 +196,7 @@ export class QuestionComponent implements OnInit {
   }
 
   movetoworksheet(data: any, index: number): void {
+    console.log(data)
     let obj: any = {};
     let datatype: string = '';
     if (data.question_id) {

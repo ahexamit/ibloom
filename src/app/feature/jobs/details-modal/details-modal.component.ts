@@ -6,10 +6,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FeatureService } from '../../feature.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-details-modal',
@@ -23,20 +19,47 @@ export class DetailsModalComponent {
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() close = new EventEmitter<void>();
 
-  deatilsShow!: string;
-  constructor(
-    private cd: ChangeDetectorRef
-  ) {}
+  detailsToShow: any;
+
+  constructor(private cd: ChangeDetectorRef) {}
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['mode'] || changes['data']) {
       if (this.visible) {
         if (this.mode === 'edit' && this.data) {
-          this.deatilsShow = JSON.stringify(this.data.lesson_content);
+          this.detailsToShow = this.normalizeKeys(this.data.lesson_content);
         }
       }
     }
     this.cd.detectChanges();
   }
+
+  objectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+
+  isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
+
+  formatKey(key: string): string {
+    return key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+  }
+
+  normalizeKeys(obj: any): any {
+    if (!obj || typeof obj !== 'object') return obj;
+    
+    if (Array.isArray(obj)) {
+      return obj.map(item => this.normalizeKeys(item));
+    }
+
+    return Object.keys(obj).reduce((acc:any, key) => {
+      const normalizedKey = key.replace(/ /g, '_');
+      acc[normalizedKey] = this.normalizeKeys(obj[key]);
+      return acc;
+    }, {});
+  }
+
   closeModal() {
     this.visible = false;
     this.visibleChange.emit(this.visible);
