@@ -149,17 +149,33 @@ export class FeatureService {
   public delete_questions(data: any, datatype: string): Observable<any> {
     const endPoint = 'delete_questions';
     const url = `${this.sharedservice.base_url}${endPoint}`;
-    const body = new FormData();
+    let params = new HttpParams();
+    
     if (datatype === 'question') {
-      body.append('question_id', data?.question_id);
+      params = params.append('question_id', data?.question_id);
     } else {
-      body.append('regenerated_id', data?.question_id);
+      params = params.append('regenerated_id', data?.regenerated_id);
     }
-    // body.append('regenerated_id', data?.regenerated_id);
-    return this.http.post<any>(url, body).pipe(
+  
+    return this.http.delete<any>(url, { params: params }).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  };
+  /**Delete API topic  */
+
+  public delete_topics(topic_id: number): Observable<any> {
+    const endPoint = 'delete_topics';
+    const url = `${this.sharedservice.base_url}${endPoint}`;
+    let params = new HttpParams().set('topic_id', topic_id.toString());
+  
+    return this.http.delete<any>(url, { params: params }).pipe(
       map((data) => {
         return data;
       })
     );
   }
+  
+  
 }

@@ -27,6 +27,7 @@ export class TopicComponent implements OnInit {
   constructor(
     private featuredService: FeatureService,
     private router: Router,
+    private toastr:ToastrService
   ) {};
   ngOnInit() {
     // this.getAllTopics();
@@ -88,8 +89,24 @@ export class TopicComponent implements OnInit {
   }
 
   deleteItem() {
-    // Your delete item logic here
-  };
+    console.log(this.cardData)
+    // this.featuredService.delete_topics(2)
+    // .subscribe({
+    //   next: (res: any) => {
+    //     if (res.message === 'Topic Deleted successfully') {
+    //       this.toastr.success(res.message);
+    //       this.getAllTopics();
+    //     }
+    //   },
+    //   error: (err: any) => {
+    //     console.error('Error:', err);
+    //     this.toastr.error(
+    //       'Failed to Delete Topic. Please try again.'
+    //     );
+    //   },
+    // });
+  }
+
   showQuestions(data: any) {
     if (data) {
       this.router.navigate([

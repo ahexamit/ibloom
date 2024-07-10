@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FeatureService } from '../../feature.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -36,7 +36,8 @@ export class QuestionComponent implements OnInit {
   constructor(
     private featuredService: FeatureService,
     private routes: ActivatedRoute,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -50,11 +51,22 @@ export class QuestionComponent implements OnInit {
   }
 
   initializeMessages(): void {
-    this.all_questions.forEach((_, i) => {
+    this.all_questions.forEach((question, i) => {
       this.message[i] = [''];
       this.showtextbox[i] = [false];
+      if (question.generatedVr) {
+        question.generatedVr.forEach((subQuestion: any, j: number) => {
+          if (!this.message[i][j + 1]) {
+            this.message[i][j + 1] = '';
+          }
+          if (!this.showtextbox[i][j + 1]) {
+            this.showtextbox[i][j + 1] = false;
+          }
+        });
+      }
     });
   }
+  
 
   get_topics(): void {
     this.featuredService.get_topics().subscribe((res) => {
@@ -96,7 +108,7 @@ export class QuestionComponent implements OnInit {
   }
 
   showtextarea(api:string ,index: number, subIndex: number = 0) {
-    console.log(api)
+    // console.log(api)
     this.generate_mode = api;
     if (!this.showtextbox[index]) {
       this.showtextbox[index] = [];
@@ -118,10 +130,18 @@ export class QuestionComponent implements OnInit {
     index: number,
     data: any,
     textareaRef: HTMLTextAreaElement | null,
-    parentIndex: number = -1
+    parentIndex: number = -1,
+    itemid:any
   ): void {
-    let message = '';
+    // if (itemid){
+    // console.log(itemid[index]['regenerated_id'])
+      
 
+    // }
+
+    
+    let message = '';
+  
     if (parentIndex === -1) {
       if (this.message[index] && this.message[index][0]) {
         message = this.message[index][0];
@@ -131,34 +151,38 @@ export class QuestionComponent implements OnInit {
         message = this.message[parentIndex][index];
       }
     }
-
-    console.log(data, data?.question_id, data?.regenerated_id);
-
+  
+    // console.log(data, data?.question_id, data?.regenerated_id);
+  
     let obj: any = {
       user_input: message,
     };
     let datatype: string = '';
-    if (data.question_id) {
-      datatype = 'question';
-      obj.question_id = data?.question_id;
-    } else {
+    // if (data.question_id) {
+    //   datatype = 'question';
+    //   obj.question_id = data?.question_id;
+    // } else
+    if(itemid) {
       datatype = 'requestion';
-      obj.regenerated_id = data?.regenerated_id;
+      obj.regenerated_id = itemid[index-1]['regenerated_id'];
+    }else{
+         datatype = 'question';
+      obj.question_id = data?.question_id;
     }
     let api_endpoint = '';
-    if(this.generate_mode === 'Generate'){
-      api_endpoint = 'visualizing_question'
-    } else if(this.generate_mode === 'Regenerate'){
-     api_endpoint = 'regenerate_question'
-    }else{
-      api_endpoint = 'similar_question'
-
+    if (this.generate_mode === 'Generate') {
+      api_endpoint = 'visualizing_question';
+    } else if (this.generate_mode === 'Regenerate') {
+      api_endpoint = 'regenerate_question';
+    } else {
+      api_endpoint = 'similar_question';
     }
-    this.featuredService.generateVr(obj, datatype,api_endpoint).subscribe((res) => {
+  
+    this.featuredService.generateVr(obj, datatype, api_endpoint).subscribe((res) => {
       console.log('Response from generateVr:', res); // Log the response for debugging
-
+  
       if (typeof res === 'object' && res !== null) {
-        this.toaster.success(res.message)
+        this.toaster.success(res.message);
         if (parentIndex === -1) {
           this.showtextbox[index] = [];
           this.message[index] = [''];
@@ -166,23 +190,35 @@ export class QuestionComponent implements OnInit {
           this.showtextbox[parentIndex][index] = false;
           this.message[parentIndex][index] = '';
         }
-
+  
         if (textareaRef) {
           textareaRef.value = '';
         }
-
+  
         const normalizedResponse = this.normalizeKeys(res);
         if (!data.generatedVr) {
           data.generatedVr = [];
         }
-
+  console.log(normalizedResponse)
         data.generatedVr.push(normalizedResponse);
+    this.cd.detectChanges();
+
+
         this.isMovedToWorksheet.push(false);
+    this.cd.detectChanges();
+
+  console.log(data.generatedVr,this.filtered_questions)
+        // Ensure that the UI updates to reflect the new sub-question
+        this.filtered_questions = [...this.filtered_questions];
+    this.cd.detectChanges();
+
+        console.log(this.filtered_questions)
       } else {
         console.error('Unexpected structure for the response:', res);
       }
     });
   }
+  
 
   normalizeKeys(obj: any): any {
     const normalizedObj: any = {};
@@ -196,7 +232,7 @@ export class QuestionComponent implements OnInit {
   }
 
   movetoworksheet(data: any, index: number): void {
-    console.log(data)
+    // console.log(data)
     let obj: any = {};
     let datatype: string = '';
     if (data.question_id) {
@@ -215,7 +251,8 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  delete(data: any, mainIndex: number, subIndex?: number): void {
+  delete( generate_id:any,data: any, mainIndex: number, subIndex?: number, ): void {
+    console.log(generate_id)
     let obj: any = {};
     let datatype: string = '';
     if (data.question_id) {
@@ -227,7 +264,7 @@ export class QuestionComponent implements OnInit {
       obj.question_id = data.regenerated_id;
     }
     this.featuredService.delete_questions(obj, datatype).subscribe((res) => {
-      console.log(res);
+      // console.log(res);
       this.toaster.success(res.message);
 
       // Remove the deleted question from the local array
