@@ -89,22 +89,22 @@ export class TopicComponent implements OnInit {
   }
 
   deleteItem() {
-    console.log(this.cardData)
-    // this.featuredService.delete_topics(2)
-    // .subscribe({
-    //   next: (res: any) => {
-    //     if (res.message === 'Topic Deleted successfully') {
-    //       this.toastr.success(res.message);
-    //       this.getAllTopics();
-    //     }
-    //   },
-    //   error: (err: any) => {
-    //     console.error('Error:', err);
-    //     this.toastr.error(
-    //       'Failed to Delete Topic. Please try again.'
-    //     );
-    //   },
-    // });
+    console.log(this.cardData.topic_id)
+    this.featuredService.delete_topics(this.cardData.topic_id)
+    .subscribe({
+      next: (res: any) => {
+        if (res.message === 'Topic Deleted successfully') {
+          this.toastr.success(res.message);
+          this.getAllTopics();
+        }
+      },
+      error: (err: any) => {
+        console.error('Error:', err);
+        this.toastr.error(
+          'Failed to Delete Topic. Please try again.'
+        );
+      },
+    });
   }
 
   showQuestions(data: any) {
